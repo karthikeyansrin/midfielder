@@ -39,6 +39,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { FanStateProvider } from "@/store/FanStateProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -47,7 +49,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} dark h-full`}>
       <body className="min-h-full flex flex-col antialiased">
-        <TooltipProvider>{children}</TooltipProvider>
+        <FanStateProvider>
+          <TooltipProvider>{children}</TooltipProvider>
+        </FanStateProvider>
       </body>
     </html>
   );
