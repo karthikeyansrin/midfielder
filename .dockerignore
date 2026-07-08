@@ -1,0 +1,45 @@
+# ─────────────────────────────────────────────────────────────────
+#  .dockerignore — MIDFIELDER
+#  Exclude unnecessary files from the Docker build context
+# ─────────────────────────────────────────────────────────────────
+
+# Dependencies
+node_modules
+
+# Build output
+.next
+out
+
+# Environment files (inject via Cloud Run secrets)
+.env
+.env.*
+!.env.example
+
+# Development / tooling
+.git
+.gitignore
+.github
+.vscode
+*.md
+!README.md
+
+# Testing
+__tests__
+coverage
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+jest.config.*
+
+# Docker itself
+Dockerfile*
+docker-compose*
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*

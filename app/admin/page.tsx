@@ -1,0 +1,100 @@
+import type { Metadata } from "next";
+import { MetricsPanel } from "@/components/admin/MetricsPanel";
+import { EventSimulator } from "@/components/admin/EventSimulator";
+import { UserTable } from "@/components/admin/UserTable";
+import { SystemHealthPanel } from "@/components/admin/SystemHealthPanel";
+import type { SystemHealth } from "@/types/admin";
+
+export const metadata: Metadata = {
+  title: "Admin Dashboard",
+};
+
+// Stub system health — replace with real health check service
+const SYSTEM_HEALTH: SystemHealth = {
+  apiLatencyMs: 42,
+  databaseStatus: "healthy",
+  firestoreStatus: "healthy",
+  geminiStatus: "healthy",
+  uptimePercent: 99.97,
+  lastChecked: new Date().toISOString(),
+};
+
+export default function AdminPage() {
+  return (
+    <div className="max-w-7xl mx-auto space-y-8">
+      {/* Page header */}
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-[var(--text-primary)]">
+            Platform Overview
+          </h1>
+          <p className="mt-1 text-sm text-[var(--text-secondary)]">
+            Stadium management · Fan analytics · Event simulation
+          </p>
+        </div>
+
+        {/* System health pill */}
+        <div className="hidden sm:flex items-center gap-2 rounded-xl border border-[rgba(16,185,129,0.3)] bg-[var(--accent-emerald-glow)] px-4 py-2">
+          <span className="h-2 w-2 rounded-full bg-[var(--accent-emerald)]" />
+          <span className="text-sm font-semibold text-[var(--accent-emerald)]">
+            All Systems Operational
+          </span>
+        </div>
+      </div>
+
+      {/* Platform metrics — icons passed as strings, resolved in Client Component */}
+      <MetricsPanel
+        title="Platform Metrics"
+        metrics={[
+          {
+            id: "admin-metric-total-fans",
+            label: "Total Registered Fans",
+            value: 2_400_000,
+            icon: "Users",
+            accent: "amber",
+            change: "+12.4% ↑",
+            changeType: "positive",
+          },
+          {
+            id: "admin-metric-active-today",
+            label: "Active Fans Today",
+            value: 47_320,
+            icon: "Activity",
+            accent: "emerald",
+            change: "+8.1% ↑",
+            changeType: "positive",
+          },
+          {
+            id: "admin-metric-total-matches",
+            label: "Total Matches",
+            value: 1_250,
+            icon: "Zap",
+            accent: "blue",
+            change: "+5 this week",
+            changeType: "positive",
+          },
+          {
+            id: "admin-metric-retention",
+            label: "Retention Rate",
+            value: 84,
+            unit: "%",
+            icon: "BarChart3",
+            accent: "amber",
+            change: "-0.3% ↓",
+            changeType: "negative",
+          },
+        ]}
+        columns={4}
+      />
+
+      {/* System health — rendered in a Client Component */}
+      <SystemHealthPanel health={SYSTEM_HEALTH} />
+
+      {/* Main content — simulator + user table */}
+      <div className="grid gap-6 lg:grid-cols-[360px_1fr]">
+        <EventSimulator />
+        <UserTable />
+      </div>
+    </div>
+  );
+}

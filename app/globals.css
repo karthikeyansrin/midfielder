@@ -1,0 +1,231 @@
+/* Google Fonts — must be first before all other rules */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap");
+
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────
+   MIDFIELDER — Global Styles
+   Dark stadium control room theme
+   Accent: Amber (#f59e0b) + Emerald (#10b981)
+   ───────────────────────────────────────────────────────────────── */
+
+/* ── Design Tokens ────────────────────────────────────────────── */
+:root {
+  /* Base surfaces */
+  --bg-base: #080c10;
+  --bg-surface: #0d1117;
+  --bg-elevated: #141b24;
+  --bg-overlay: #1a2332;
+  --bg-hover: #1f2d40;
+
+  /* Borders */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.2);
+
+  /* Text */
+  --text-primary: #f0f4f8;
+  --text-secondary: #8899aa;
+  --text-muted: #4a5568;
+
+  /* Accent — Amber (primary) */
+  --accent-amber: #f59e0b;
+  --accent-amber-dim: #d97706;
+  --accent-amber-glow: rgba(245, 158, 11, 0.15);
+  --accent-amber-border: rgba(245, 158, 11, 0.3);
+
+  /* Accent — Emerald (success / active) */
+  --accent-emerald: #10b981;
+  --accent-emerald-dim: #059669;
+  --accent-emerald-glow: rgba(16, 185, 129, 0.15);
+
+  /* Accent — Red (danger / alerts) */
+  --accent-red: #ef4444;
+  --accent-red-glow: rgba(239, 68, 68, 0.15);
+
+  /* Accent — Blue (info) */
+  --accent-blue: #3b82f6;
+  --accent-blue-glow: rgba(59, 130, 246, 0.15);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --shadow-amber: 0 0 24px rgba(245, 158, 11, 0.2);
+  --shadow-emerald: 0 0 24px rgba(16, 185, 129, 0.2);
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  /* Shadcn/ui compatibility */
+  --background: var(--bg-base);
+  --foreground: var(--text-primary);
+  --card: var(--bg-surface);
+  --card-foreground: var(--text-primary);
+  --popover: var(--bg-elevated);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--accent-amber);
+  --primary-foreground: #000;
+  --secondary: var(--bg-elevated);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--bg-elevated);
+  --muted-foreground: var(--text-secondary);
+  --accent: var(--bg-hover);
+  --accent-foreground: var(--text-primary);
+  --destructive: var(--accent-red);
+  --border: var(--border-default);
+  --input: var(--bg-elevated);
+  --ring: var(--accent-amber);
+  --radius: var(--radius-md);
+}
+
+@theme inline {
+  --color-background: var(--bg-base);
+  --color-foreground: var(--text-primary);
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Rajdhani", system-ui, sans-serif;
+}
+
+/* ── Base Styles ──────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100dvh;
+}
+
+/* ── Typography ───────────────────────────────────────────────── */
+.font-display {
+  font-family: "Rajdhani", system-ui, sans-serif;
+  letter-spacing: 0.02em;
+}
+
+/* ── Glass Morphism ───────────────────────────────────────────── */
+.glass {
+  background: rgba(13, 17, 23, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+}
+
+.glass-elevated {
+  background: rgba(20, 27, 36, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-default);
+}
+
+/* ── Cards ────────────────────────────────────────────────────── */
+.card-stadium {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.card-stadium:hover {
+  border-color: var(--accent-amber-border);
+  box-shadow: var(--shadow-amber);
+}
+
+/* ── Gradient text ────────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent-amber) 0%, #fbbf24 50%, var(--accent-emerald) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Glow effects ─────────────────────────────────────────────── */
+.glow-amber {
+  box-shadow: var(--shadow-amber);
+}
+
+.glow-emerald {
+  box-shadow: var(--shadow-emerald);
+}
+
+/* ── Pitch grid background ────────────────────────────────────── */
+.pitch-grid {
+  background-image:
+    linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ── Live pulse animation ─────────────────────────────────────── */
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-emerald);
+  animation: live-pulse 1.5s ease-in-out infinite;
+  box-shadow: 0 0 8px var(--accent-emerald);
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+}
+
+/* ── Focus ring ───────────────────────────────────────────────── */
+*:focus-visible {
+  outline: 2px solid var(--accent-amber);
+  outline-offset: 2px;
+}
+
+/* ── Selection ────────────────────────────────────────────────── */
+::selection {
+  background: var(--accent-amber-glow);
+  color: var(--accent-amber);
+}
+
+/* ── Utility overrides ────────────────────────────────────────── */
+.text-muted {
+  color: var(--text-muted);
+}
+.text-secondary {
+  color: var(--text-secondary);
+}
+.border-subtle {
+  border-color: var(--border-subtle);
+}
