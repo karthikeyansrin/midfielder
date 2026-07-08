@@ -1,36 +1,205 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MIDFIELDER ⚽
 
-## Getting Started
+> **The AI that sees the whole field.**
 
-First, run the development server:
+MIDFIELDER is an AI-powered matchday intelligence platform designed to enhance the FIFA World Cup 2026 stadium experience through personalized, context-aware decision making.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Unlike traditional stadium assistants that simply answer questions, MIDFIELDER continuously reasons over a fan's context and live stadium events to determine the **next best action**.
+
+---
+
+## Vision
+
+Every fan experiences a stadium differently.
+
+A family with children...
+A wheelchair user...
+A fan leaving early...
+Someone travelling by metro...
+
+The same stadium event affects each person differently.
+
+MIDFIELDER acts like the **midfielder on a football team**—it observes the entire field, understands the current situation, and delivers the right decision to the right person at the right time.
+
+Instead of another notification feed...
+
+**MIDFIELDER answers one question:**
+
+> **What should this fan do next?**
+
+---
+
+# Architecture
+
+```
+                 MIDFIELDER
+
+        Stadium Events + Fan Context
+                    │
+                    ▼
+           AI Decision Engine
+                    │
+          Notify • Ignore • Explain
+                    │
+                    ▼
+             Personalized Actions
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Layer | Technology |
+|--------|------------|
+| Frontend | Next.js 15 |
+| Language | TypeScript |
+| Styling | Tailwind CSS + shadcn/ui |
+| Backend | Next.js Route Handlers |
+| AI | Google Gemini *(planned)* |
+| Database | Firebase Firestore *(planned)* |
+| Deployment | Google Cloud Run |
+| IDE | Google Antigravity |
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+# Project Status
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ✅ Sprint 1 — Foundation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Completed
 
-## Deploy on Vercel
+- Next.js 15 project setup
+- App Router
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Production-ready folder structure
+- Docker configuration
+- Cloud Run readiness
+- Landing page
+- Dashboard shell
+- Admin shell
+- API architecture
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## ✅ Sprint 2 — Fan Context Engine
+
+Completed
+
+Implemented a complete onboarding experience to build a rich fan profile that will later power AI reasoning.
+
+Features include:
+
+- Multi-step onboarding
+- Match & stadium selection
+- Travel profile
+- Fan preferences
+- Accessibility profile
+- Review & confirmation
+- Context Builder
+- FanContext domain model
+- Client-side state management
+- Personalized dashboard using FanContext
+
+At this stage, MIDFIELDER understands **who the fan is**, but has not yet started reasoning over live stadium events.
+
+---
+
+# Roadmap
+
+## 🚧 Sprint 3 — Stadium Event Simulator
+
+Generate realistic live stadium events such as:
+
+- Gate closures
+- Crowd congestion
+- Food queue updates
+- Transit delays
+- Weather alerts
+- Medical incidents
+
+---
+
+## 🚧 Sprint 4 — AI Decision Engine
+
+Integrate Google Gemini to reason over:
+
+- Fan context
+- Live stadium events
+- Match state
+
+Generate:
+
+- Notify or Ignore
+- Priority
+- Reasoning
+- Next Best Action
+
+---
+
+## 🚧 Sprint 5 — Personalized Matchday Intelligence
+
+Build the fan experience around AI-generated decisions:
+
+- Live recommendations
+- Action timeline
+- Context-aware alerts
+- Explainable AI reasoning
+
+---
+
+## 🚧 Sprint 6 — Stadium Operations Center
+
+Operations dashboard for organizers including:
+
+- Crowd overview
+- Active incidents
+- AI recommendations
+- Operational insights
+- Event simulation controls
+
+---
+
+# Design Philosophy
+
+MIDFIELDER is **not** a chatbot.
+
+It is an **AI Decision Engine**.
+
+Every recommendation is generated by combining:
+
+- Fan Context
+- Live Stadium Events
+- AI Reasoning
+
+to determine the single most relevant action for each individual fan.
+
+---
+
+# Current Progress
+
+| Module | Status |
+|---------|--------|
+| Project Foundation | ✅ Complete |
+| UI Framework | ✅ Complete |
+| Fan Onboarding | ✅ Complete |
+| Fan Context Engine | ✅ Complete |
+| Dashboard Foundation | ✅ Complete |
+| Stadium Event Simulation | 🚧 Planned |
+| AI Decision Engine | 🚧 Planned |
+| Recommendation Engine | 🚧 Planned |
+| Firebase Integration | 🚧 Planned |
+| Gemini Integration | 🚧 Planned |
+| Operations Center | 🚧 Planned |
+| Cloud Run Deployment | 🚧 Planned |
+
+---
+
+# Built for
+
+**PromptWars Virtual – Challenge 04**
+
+**Smart Stadiums & Tournament Operations**
+
+Creating AI-powered matchday experiences through intelligent, personalized decision making.
