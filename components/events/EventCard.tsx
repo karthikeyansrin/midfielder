@@ -7,10 +7,12 @@ import { MapPin, Clock } from "lucide-react";
 
 export function EventCard({ 
   event, 
-  onResolve 
+  onResolve,
+  isAffected 
 }: { 
   event: StadiumEvent;
   onResolve?: (id: string) => void;
+  isAffected?: boolean;
 }) {
   const isResolved = event.status === "resolved";
 
@@ -21,6 +23,8 @@ export function EventCard({
       className={`rounded-xl border p-5 transition-all ${
         isResolved 
           ? "border-[var(--border-subtle)] bg-[var(--bg-surface)] opacity-70" 
+          : isAffected
+          ? "border-[var(--accent-amber)] bg-[var(--accent-amber-glow)] shadow-[0_0_15px_rgba(245,158,11,0.15)] ring-1 ring-[var(--accent-amber)] animate-pulse"
           : "border-[var(--border-default)] bg-[var(--bg-elevated)] shadow-sm"
       }`}
     >

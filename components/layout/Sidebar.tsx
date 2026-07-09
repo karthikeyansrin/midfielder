@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Activity,
   BarChart3,
@@ -15,10 +15,12 @@ import {
   User,
   Users,
   Zap,
+  LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DASHBOARD_NAV, ADMIN_NAV, APP_NAME } from "@/lib/constants";
 import { Separator } from "@/components/ui/separator";
+import { useFanState } from "@/store/FanStateProvider";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   LayoutDashboard,
@@ -40,7 +42,14 @@ interface SidebarProps {
 
 export function Sidebar({ variant }: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { fanContext, clearFanContext } = useFanState();
   const navItems = variant === "admin" ? ADMIN_NAV : DASHBOARD_NAV;
+
+  const handleSignOut = () => {
+    clearFanContext();
+    router.push("/onboarding");
+  };
 
   return (
     <aside className="hidden lg:flex w-60 flex-col shrink-0 border-r border-[var(--border-subtle)] bg-[var(--bg-surface)] h-full min-h-screen">
@@ -106,19 +115,28 @@ export function Sidebar({ variant }: SidebarProps) {
       <Separator className="bg-[var(--border-subtle)]" />
 
       {/* Footer stub — profile or logout */}
-      <div className="px-3 py-4">
+      <div className="px-3 py-4 space-y-2">
         <div className="flex items-center gap-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-elevated)] px-3 py-2.5">
           <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[var(--accent-amber)] to-[var(--accent-emerald)] shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="truncate text-xs font-medium text-[var(--text-primary)]">
-              {variant === "admin" ? "Admin User" : "Alex Martinez"}
+              {variant === "admin" ? "Admin User" : (fanContext?.displayName || "Guest Fan")}
             </p>
             <p className="truncate text-[10px] text-[var(--text-muted)]">
-              {variant === "admin" ? "super_admin" : "Gold Tier"}
+              {variant === "admin" ? "super_admin" : (fanContext?.matchInfo?.section || "No Section")}
             </p>
           </div>
-          <Settings className="h-3.5 w-3.5 shrink-0 text-[var(--text-muted)]" />
         </div>
+        
+        {variant !== "admin" && (
+          <button 
+            onClick={handleSignOut}
+            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] transition-colors border border-transparent hover:border-[var(--border-subtle)]"
+          >
+            <LogOut className="h-3.5 w-3.5" />
+            Sign Out
+          </button>
+        )}
       </div>
     </aside>
   );

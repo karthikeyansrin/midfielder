@@ -1,3 +1,5 @@
+"use client";
+
 import { OperationsSummary } from "./OperationsSummary";
 import { EventGenerator } from "./EventGenerator";
 import { EventTimeline } from "./EventTimeline";

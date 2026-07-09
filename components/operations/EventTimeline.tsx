@@ -1,3 +1,5 @@
+"use client";
+
 import { useEventEngine } from "@/hooks/useEventEngine";
 import { EventFeed } from "@/components/events/EventFeed";
 

@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState, useCallback } from 'react';
 import { EventEngine } from '@/engine/eventEngine';
 import { SimulatorProvider } from '@/engine/events/providers/SimulatorProvider';
@@ -15,12 +17,12 @@ export function useEventEngine() {
 
   useEffect(() => {
     // Initial fetch
-    setEvents(engine.getAllEvents ? engine.getAllEvents() : engine.filterEvents({}));
+    setEvents(engine.filterEvents({}));
     setIsSimulating(!simulator.isPaused);
 
     // Subscribe to updates
     const unsubscribe = engine.subscribe(() => {
-      setEvents(engine.getAllEvents ? engine.getAllEvents() : engine.filterEvents({}));
+      setEvents(engine.filterEvents({}));
     });
 
     return () => {

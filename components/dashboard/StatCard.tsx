@@ -10,6 +10,9 @@ import {
   TrendingUp,
   Trophy,
   Zap,
+  Activity,
+  AlertTriangle,
+  Info
 } from "lucide-react";
 import { cn, formatCompact } from "@/lib/utils";
 
@@ -18,6 +21,9 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Star,
   Trophy,
   Zap,
+  Activity,
+  AlertTriangle,
+  Info,
 };
 
 interface StatCardProps {

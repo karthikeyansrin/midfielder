@@ -16,9 +16,6 @@ export const NAV_LINKS = [
 
 export const DASHBOARD_NAV = [
   { label: "Overview", href: "/dashboard", icon: "LayoutDashboard" },
-  { label: "Live Match", href: "/dashboard/match", icon: "Zap" },
-  { label: "Rewards", href: "/dashboard/rewards", icon: "Gift" },
-  { label: "Predictions", href: "/dashboard/predictions", icon: "Target" },
   { label: "Profile", href: "/dashboard/profile", icon: "User" },
 ] as const;
 
