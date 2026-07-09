@@ -108,7 +108,7 @@ At this stage, MIDFIELDER understands **who the fan is**, but has not yet starte
 
 # Roadmap
 
-## 🚧 Sprint 3 — Stadium Event Simulator
+## ✅ Sprint 3 — Stadium Event Simulator
 
 Generate realistic live stadium events such as:
 
@@ -121,7 +121,7 @@ Generate realistic live stadium events such as:
 
 ---
 
-## 🚧 Sprint 4 — AI Decision Engine
+## ✅ Sprint 4 — AI Decision Engine
 
 Integrate Google Gemini to reason over:
 
@@ -186,9 +186,9 @@ to determine the single most relevant action for each individual fan.
 | Fan Onboarding | ✅ Complete |
 | Fan Context Engine | ✅ Complete |
 | Dashboard Foundation | ✅ Complete |
-| Stadium Event Simulation | 🚧 Planned |
-| AI Decision Engine | 🚧 Planned |
-| Recommendation Engine | 🚧 Planned |
+| Stadium Event Simulation | ✅ Planned |
+| AI Decision Engine | ✅ Planned |
+| Recommendation Engine | ✅ Planned |
 | Firebase Integration | 🚧 Planned |
 | Gemini Integration | 🚧 Planned |
 | Operations Center | 🚧 Planned |
