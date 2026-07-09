@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { MetricsPanel } from "@/components/admin/MetricsPanel";
-import { EventSimulator } from "@/components/admin/EventSimulator";
-import { UserTable } from "@/components/admin/UserTable";
 import { SystemHealthPanel } from "@/components/admin/SystemHealthPanel";
+import { MissionControl } from "@/components/operations/MissionControl";
 import type { SystemHealth } from "@/types/admin";
 
 export const metadata: Metadata = {
@@ -90,10 +89,9 @@ export default function AdminPage() {
       {/* System health — rendered in a Client Component */}
       <SystemHealthPanel health={SYSTEM_HEALTH} />
 
-      {/* Main content — simulator + user table */}
-      <div className="grid gap-6 lg:grid-cols-[360px_1fr]">
-        <EventSimulator />
-        <UserTable />
+      {/* Main content — Mission Control */}
+      <div className="mt-8">
+        <MissionControl />
       </div>
     </div>
   );
