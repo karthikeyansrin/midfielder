@@ -1,205 +1,47 @@
-# MIDFIELDER ⚽
+# MIDFIELDER ⚡
 
-> **The AI that sees the whole field.**
+> **The intelligent stadium fan engagement platform. Powered by AI. Built for matchday.**
 
-MIDFIELDER is an AI-powered matchday intelligence platform designed to enhance the FIFA World Cup 2026 stadium experience through personalized, context-aware decision making.
+MIDFIELDER is a real-time, context-aware web application built for stadium operators and fans. By ingesting live stadium operational events and passing them through a smart AI Decision Engine (powered by Gemini 3.1 Flash Lite), MIDFIELDER delivers hyper-personalized, actionable recommendations directly to a fan's dashboard. 
 
-Unlike traditional stadium assistants that simply answer questions, MIDFIELDER continuously reasons over a fan's context and live stadium events to determine the **next best action**.
+## 🌟 Key Features
 
----
+### 1. Smart Decision Coordinator & AI Engine
+- **Gemini 3.1 Flash Lite Integration**: Analyzes incoming stadium events against a fan's specific context (seat location, travel plans, accessibility needs) to generate tailored alerts.
+- **Server-Side Gatekeeper**: A robust `DecisionCoordinator` intercepts event streams, implementing debouncing, context-hashing, and concurrency locks to prevent quota exhaustion. It ensures Gemini is only queried when a *meaningful* context shift occurs.
 
-## Vision
+### 2. Immersive Fan Experience
+- **Dynamic Onboarding Wizard**: A slick, multi-step setup flow where fans configure their unique context:
+  - **Match Info**: Stadium selection and seat zones (e.g., North Gate, Section 101, VIP Lounge).
+  - **Travel Profile**: Transport mode, arrival times, and parking requirements.
+  - **Preferences & Accessibility**: Food/merch interests, and critical needs like wheelchair assistance.
+- **Personalized Fan Hub**: A live dashboard that updates dynamically with AI recommendations (e.g., "Use South Gate to avoid congestion," "Flash sale near Section 101") based exclusively on the fan's current profile.
 
-Every fan experiences a stadium differently.
+### 3. Mission Control (Admin Panel)
+- **Live Event Simulator**: Operators can inject randomized, realistic stadium events (Crowd Congestion, Medical Emergencies, Gate Closures) into the central event bus.
+- **Zone Monitoring**: Real-time visual monitoring of stadium zones. As simulated events occur in specific areas (e.g., "Food Court A"), the corresponding UI zones react and display severity levels (Healthy, Warning, Critical).
 
-A family with children...
-A wheelchair user...
-A fan leaving early...
-Someone travelling by metro...
+### 4. Technical Highlights
+- **Real-time Sync**: Firebase Firestore integration for seamless, instant state updates across all connected clients.
+- **Modern UI/UX**: Built with Next.js, Framer Motion, and Tailwind CSS. Features glassmorphism, dynamic breadcrumbs, responsive grids, and highly polished micro-animations.
 
-The same stadium event affects each person differently.
+## 🚀 Quick Start (Demo Mode)
 
-MIDFIELDER acts like the **midfielder on a football team**—it observes the entire field, understands the current situation, and delivers the right decision to the right person at the right time.
+We have pre-configured test accounts for quick hackathon demonstrations.
 
-Instead of another notification feed...
+### Admin Access (Mission Control)
+1. Navigate to `/admin/login`
+2. Use the test credentials: `admin` / `admin`
+3. Generate simulated events using the **Simulator Controls** and watch the stadium zones react in real-time.
 
-**MIDFIELDER answers one question:**
+### Fan Access (Dashboard)
+1. Navigate to `/login`
+2. Use the test credentials: `test` / `test`
+3. (Alternatively, hit **Get Started** on the landing page to experience the full onboarding flow).
+4. Watch as the AI generates personalized alerts in response to the Admin's simulated events.
 
-> **What should this fan do next?**
-
----
-
-# Architecture
-
-```
-                 MIDFIELDER
-
-        Stadium Events + Fan Context
-                    │
-                    ▼
-           AI Decision Engine
-                    │
-          Notify • Ignore • Explain
-                    │
-                    ▼
-             Personalized Actions
-```
-
----
-
-# Tech Stack
-
-| Layer | Technology |
-|--------|------------|
-| Frontend | Next.js 15 |
-| Language | TypeScript |
-| Styling | Tailwind CSS + shadcn/ui |
-| Backend | Next.js Route Handlers |
-| AI | Google Gemini *(planned)* |
-| Database | Firebase Firestore *(planned)* |
-| Deployment | Google Cloud Run |
-| IDE | Google Antigravity |
-
----
-
-# Project Status
-
-## ✅ Sprint 1 — Foundation
-
-Completed
-
-- Next.js 15 project setup
-- App Router
-- TypeScript
-- Tailwind CSS
-- shadcn/ui
-- Production-ready folder structure
-- Docker configuration
-- Cloud Run readiness
-- Landing page
-- Dashboard shell
-- Admin shell
-- API architecture
-
----
-
-## ✅ Sprint 2 — Fan Context Engine
-
-Completed
-
-Implemented a complete onboarding experience to build a rich fan profile that will later power AI reasoning.
-
-Features include:
-
-- Multi-step onboarding
-- Match & stadium selection
-- Travel profile
-- Fan preferences
-- Accessibility profile
-- Review & confirmation
-- Context Builder
-- FanContext domain model
-- Client-side state management
-- Personalized dashboard using FanContext
-
-At this stage, MIDFIELDER understands **who the fan is**, but has not yet started reasoning over live stadium events.
-
----
-
-# Roadmap
-
-## ✅ Sprint 3 — Stadium Event Simulator
-
-Generate realistic live stadium events such as:
-
-- Gate closures
-- Crowd congestion
-- Food queue updates
-- Transit delays
-- Weather alerts
-- Medical incidents
-
----
-
-## ✅ Sprint 4 — AI Decision Engine
-
-Integrate Google Gemini to reason over:
-
-- Fan context
-- Live stadium events
-- Match state
-
-Generate:
-
-- Notify or Ignore
-- Priority
-- Reasoning
-- Next Best Action
-
----
-
-## 🚧 Sprint 5 — Personalized Matchday Intelligence
-
-Build the fan experience around AI-generated decisions:
-
-- Live recommendations
-- Action timeline
-- Context-aware alerts
-- Explainable AI reasoning
-
----
-
-## 🚧 Sprint 6 — Stadium Operations Center
-
-Operations dashboard for organizers including:
-
-- Crowd overview
-- Active incidents
-- AI recommendations
-- Operational insights
-- Event simulation controls
-
----
-
-# Design Philosophy
-
-MIDFIELDER is **not** a chatbot.
-
-It is an **AI Decision Engine**.
-
-Every recommendation is generated by combining:
-
-- Fan Context
-- Live Stadium Events
-- AI Reasoning
-
-to determine the single most relevant action for each individual fan.
-
----
-
-# Current Progress
-
-| Module | Status |
-|---------|--------|
-| Project Foundation | ✅ Complete |
-| UI Framework | ✅ Complete |
-| Fan Onboarding | ✅ Complete |
-| Fan Context Engine | ✅ Complete |
-| Dashboard Foundation | ✅ Complete |
-| Stadium Event Simulation | ✅ Planned |
-| AI Decision Engine | ✅ Planned |
-| Recommendation Engine | ✅ Planned |
-| Firebase Integration | 🚧 Planned |
-| Gemini Integration | 🚧 Planned |
-| Operations Center | 🚧 Planned |
-| Cloud Run Deployment | 🚧 Planned |
-
----
-
-# Built for
-
-**PromptWars Virtual – Challenge 04**
-
-**Smart Stadiums & Tournament Operations**
-
-Creating AI-powered matchday experiences through intelligent, personalized decision making.
+## 🛠️ Built With
+- **Framework**: Next.js (App Router), React
+- **Styling**: Tailwind CSS, Framer Motion
+- **Database**: Firebase (Firestore)
+- **AI**: Google Gemini SDK (Gemini 3.1 Flash Lite)
