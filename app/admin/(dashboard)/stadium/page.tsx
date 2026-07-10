@@ -60,7 +60,7 @@ export default function AdminStadiumPage() {
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {STADIUM_ZONES.map((zone, index) => {
-          const zoneEvents = getEventsForZone(zone);
+          const zoneEvents = getEventsForZone(zone).slice(0, 5);
           const status = getZoneStatus(zoneEvents);
 
           return (

@@ -3,6 +3,7 @@ import { MetricsPanel } from "@/components/admin/MetricsPanel";
 import { SystemHealthPanel } from "@/components/admin/SystemHealthPanel";
 import { MissionControl } from "@/components/operations/MissionControl";
 import type { SystemHealth } from "@/types/admin";
+import { Info } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard",
@@ -38,6 +39,17 @@ export default function AdminPage() {
           <span className="text-sm font-semibold text-[var(--accent-emerald)]">
             All Systems Operational
           </span>
+        </div>
+      </div>
+
+      {/* Transparency Badge */}
+      <div className="bg-[var(--accent-blue-glow)] border border-[rgba(59,130,246,0.3)] rounded-lg p-3 flex items-start gap-3">
+        <Info className="w-5 h-5 text-[var(--accent-blue)] shrink-0 mt-0.5" />
+        <div>
+          <p className="text-xs font-bold text-[var(--accent-blue)] uppercase tracking-wider mb-1">Simulation Environment</p>
+          <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+            Match and venue information is based on FIFA World Cup 2026 fixtures. Stadium operational events are simulated to demonstrate AI decision-making.
+          </p>
         </div>
       </div>
 

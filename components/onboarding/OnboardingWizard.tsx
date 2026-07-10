@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { useFanState } from "@/store/FanStateProvider";
 import { buildFanContext, type OnboardingFormData } from "@/engine/contextBuilder";
 import { STADIUMS, STADIUM_ZONES } from "@/lib/constants";
+import { WORLD_CUP_TEAMS } from "@/seed/internationalTeams";
 
 const STEPS = [
   { label: "Account Setup", description: "Create your fan profile" },
@@ -28,7 +29,7 @@ export function OnboardingWizard() {
   const [data, setData] = useState<Partial<OnboardingFormData>>({
     fanId: "",
     password: "",
-    matchId: "m_weekend_derby",
+    matchId: "wc_match_01",
     stadiumId: "",
     section: "",
     modeOfTransport: "",
@@ -306,18 +307,18 @@ export function OnboardingWizard() {
                   <div>
                     <label className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Favourite Team</label>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                      {["Arsenal", "Chelsea", "Liverpool", "Manchester City", "Manchester United", "Tottenham", "Newcastle", "Aston Villa"].map((team) => (
+                      {WORLD_CUP_TEAMS.map((team) => (
                         <button
-                          key={team}
-                          onClick={() => updateData({ favoriteTeam: team })}
+                          key={team.id}
+                          onClick={() => updateData({ favoriteTeam: team.name })}
                           className={cn(
                             "rounded-lg border px-2 py-2 text-xs font-medium transition-all text-center",
-                            data.favoriteTeam === team
+                            data.favoriteTeam === team.name
                               ? "border-[var(--accent-blue-border)] bg-[var(--accent-blue-glow)] text-[var(--accent-blue)]"
                               : "border-[var(--border-subtle)] bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:border-[var(--border-default)]"
                           )}
                         >
-                          {team}
+                          {team.name}
                         </button>
                       ))}
                     </div>

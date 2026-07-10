@@ -1,6 +1,7 @@
 // ─────────────────────────────────────────────
 //  App-wide constants — MIDFIELDER platform
 // ─────────────────────────────────────────────
+import { WORLD_CUP_STADIUMS } from "../seed/internationalTeams";
 
 export const APP_NAME = "MIDFIELDER" as const;
 export const APP_DESCRIPTION =
@@ -56,29 +57,7 @@ export const STADIUM_ZONES = [
 ] as const;
 
 // Mock stadiums for selection
-export const STADIUMS = [
-  {
-    id: "s_midfielder_arena",
-    name: "MIDFIELDER ARENA I",
-    capacity: 60000,
-    city: "Chennai",
-    country: "India"
-  } ,
-  {
-    id: "s_wembley",
-    name: "MIDFIELDER ARENA II",
-    capacity: 60000,
-    city: "Chennai",
-    country: "India"
-  }//,
-  // {
-  //   id: "s_old_trafford",
-  //   name: "Old Trafford",
-  //   capacity: 74000,
-  //   city: "Manchester",
-  //   country: "England"
-  // }
-] as const;
+export const STADIUMS = WORLD_CUP_STADIUMS;
 
 // Legacy mock stadium details (can be removed later if unused)
 export const STADIUM_INFO = STADIUMS[0];

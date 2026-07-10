@@ -8,7 +8,7 @@ import { RecommendationHistory } from "@/components/dashboard/RecommendationHist
 import { useFanState } from "@/store/FanStateProvider";
 import { useRecommendationStore } from "@/store/recommendationStore";
 import { NextBestAction } from "@/components/dashboard/NextBestAction";
-import { CheckSquare, ChevronDown, ChevronUp, Activity } from "lucide-react";
+import { CheckSquare, ChevronDown, ChevronUp, Activity, Info } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function DashboardClient() {
@@ -25,7 +25,7 @@ export function DashboardClient() {
   // Redirect to onboarding if no context exists after hydration
   useEffect(() => {
     if (isHydrated && !fanContext) {
-      router.push("/onboarding");
+      router.push("/");
     }
   }, [isHydrated, fanContext, router]);
 
@@ -35,6 +35,17 @@ export function DashboardClient() {
   return (
     <div className="max-w-3xl mx-auto space-y-8 pb-24 px-4 sm:px-0">
       
+      {/* 0. Transparency Badge */}
+      <div className="bg-[var(--accent-blue-glow)] border border-[rgba(59,130,246,0.3)] rounded-lg p-3 flex items-start gap-3">
+        <Info className="w-5 h-5 text-[var(--accent-blue)] shrink-0 mt-0.5" />
+        <div>
+          <p className="text-xs font-bold text-[var(--accent-blue)] uppercase tracking-wider mb-1">Simulation Environment</p>
+          <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+            Match and venue information is based on FIFA World Cup 2026 fixtures. Stadium operational events are simulated to demonstrate AI decision-making.
+          </p>
+        </div>
+      </div>
+
       {/* 1. Context Header */}
       <MatchWidget />
 

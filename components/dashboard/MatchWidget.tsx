@@ -4,36 +4,10 @@ import { motion } from "framer-motion";
 import { formatScore } from "@/lib/utils";
 import type { Match } from "@/types/match";
 import { useEventEngine } from "@/hooks/useEventEngine";
+import { WORLD_CUP_MATCHES } from "@/seed/internationalTeams";
 
-// Mock live match
-const MOCK_MATCH: Match = {
-  id: "match_live_01",
-  homeTeam: {
-    id: "mfc",
-    name: "MIDFIELDER FC",
-    shortName: "MFC",
-    logoUrl: "",
-    primaryColor: "#f59e0b",
-    secondaryColor: "#0d1117",
-  },
-  awayTeam: {
-    id: "afc",
-    name: "Arena Athletic",
-    shortName: "AAF",
-    logoUrl: "",
-    primaryColor: "#10b981",
-    secondaryColor: "#0d1117",
-  },
-  score: { home: 2, away: 1 },
-  status: "live",
-  kickoffTime: new Date(Date.now() - 52 * 60_000).toISOString(),
-  venue: "MIDFIELDER Arena",
-  competition: "Premier League",
-  round: "Matchweek 28",
-  attendance: 47320,
-  minute: 52,
-  events: [],
-};
+// Mock live match from seed
+const MOCK_MATCH: Match = WORLD_CUP_MATCHES[0];
 
 export function MatchWidget() {
   const match = MOCK_MATCH;
