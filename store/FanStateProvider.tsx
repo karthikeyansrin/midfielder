@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import type { FanContext } from "@/domain/fan/FanContext";
+import { FanRepository } from "@/repositories/FanRepository";
 
 interface FanStateContextType {
   fanContext: FanContext | null;
@@ -14,7 +15,7 @@ const FanStateContext = createContext<FanStateContextType | undefined>(
   undefined
 );
 
-const LOCAL_STORAGE_KEY = "midfielder_fan_context";
+const LOCAL_STORAGE_KEY = "midfielder_fan_id";
 
 export function FanStateProvider({ children }: { children: React.ReactNode }) {
   const [fanContext, setFanContextState] = useState<FanContext | null>(null);
@@ -22,24 +23,33 @@ export function FanStateProvider({ children }: { children: React.ReactNode }) {
 
   // Load from localStorage on mount
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
-      if (stored) {
-        setFanContextState(JSON.parse(stored));
+    const loadFan = async () => {
+      try {
+        const storedId = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (storedId) {
+          const profile = await FanRepository.getFan(storedId);
+          if (profile) {
+            setFanContextState(profile);
+          }
+        }
+      } catch (e) {
+        console.error("Failed to load FanContext from Firestore", e);
+      } finally {
+        setIsHydrated(true);
       }
-    } catch (e) {
-      console.error("Failed to parse stored FanContext", e);
-    } finally {
-      setIsHydrated(true);
-    }
+    };
+    loadFan();
   }, []);
 
   const setFanContext = (context: FanContext) => {
     setFanContextState(context);
     try {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(context));
+      localStorage.setItem(LOCAL_STORAGE_KEY, context.id);
+      // It's the caller's responsibility to save to Firestore via FanRepository,
+      // but we do it here as a safety measure.
+      FanRepository.saveFan(context).catch(console.error);
     } catch (e) {
-      console.error("Failed to save FanContext to localStorage", e);
+      console.error("Failed to save fanId to localStorage", e);
     }
   };
 

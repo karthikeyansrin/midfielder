@@ -48,7 +48,10 @@ export function Sidebar({ variant }: SidebarProps) {
 
   const handleSignOut = () => {
     clearFanContext();
-    router.push("/onboarding");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("midfielder_admin_auth");
+    }
+    router.push("/");
   };
 
   return (
@@ -128,15 +131,13 @@ export function Sidebar({ variant }: SidebarProps) {
           </div>
         </div>
         
-        {variant !== "admin" && (
-          <button 
-            onClick={handleSignOut}
-            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] transition-colors border border-transparent hover:border-[var(--border-subtle)]"
-          >
-            <LogOut className="h-3.5 w-3.5" />
-            Sign Out
-          </button>
-        )}
+        <button 
+          onClick={handleSignOut}
+          className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] transition-colors border border-transparent hover:border-[var(--border-subtle)]"
+        >
+          <LogOut className="h-3.5 w-3.5" />
+          Sign Out
+        </button>
       </div>
     </aside>
   );

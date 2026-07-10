@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { formatScore } from "@/lib/utils";
 import type { Match } from "@/types/match";
+import { useEventEngine } from "@/hooks/useEventEngine";
 
 // Mock live match
 const MOCK_MATCH: Match = {
@@ -36,7 +37,10 @@ const MOCK_MATCH: Match = {
 
 export function MatchWidget() {
   const match = MOCK_MATCH;
-  const isLive = match.status === "live";
+  const { matchStatus } = useEventEngine();
+  const isLive = matchStatus === "first_half" || matchStatus === "second_half" || matchStatus === "kickoff";
+  
+  const displayStatus = matchStatus.replace("_", " ");
 
   return (
     <motion.div
@@ -52,7 +56,7 @@ export function MatchWidget() {
             <span className="text-[10px] font-bold text-[var(--accent-red)] uppercase tracking-wider">{match.minute}'</span>
           </div>
         ) : (
-          <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">{match.status}</span>
+          <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">{displayStatus}</span>
         )}
         <div className="flex items-center gap-2 text-sm font-semibold text-[var(--text-primary)]">
           <span className="opacity-80">{match.homeTeam.shortName}</span>

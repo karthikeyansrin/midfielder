@@ -9,13 +9,9 @@ export function MissionControl() {
     <div className="space-y-6">
       <OperationsSummary />
       
-      <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
-        <div>
-          <EventGenerator />
-        </div>
-        <div>
-          <EventTimeline />
-        </div>
+      <div className="grid gap-6 lg:grid-cols-[300px_1fr] items-start">
+        <EventGenerator />
+        <EventTimeline />
       </div>
     </div>
   );

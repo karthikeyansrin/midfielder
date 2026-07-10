@@ -1,13 +1,15 @@
 import { create } from "zustand";
 import { Recommendation, RecommendationStatus } from "@/domain/recommendation/Recommendation";
+import { RecommendationRepository } from "@/repositories/RecommendationRepository";
 
 interface RecommendationState {
   recommendations: Recommendation[];
   activeRecommendation: Recommendation | null;
+  unsubscribeFn: (() => void) | null;
   
   // Actions
-  addRecommendation: (recommendation: Recommendation) => void;
-  updateStatus: (id: string, status: RecommendationStatus) => void;
+  subscribe: (fanId: string) => void;
+  unsubscribe: () => void;
   dismissActive: () => void;
   completeActive: () => void;
   expirePastRecommendations: (currentTime: string) => void;
@@ -16,86 +18,52 @@ interface RecommendationState {
 export const useRecommendationStore = create<RecommendationState>((set, get) => ({
   recommendations: [],
   activeRecommendation: null,
+  unsubscribeFn: null,
 
-  addRecommendation: (recommendation) => {
-    set((state) => {
-      const updatedRecommendations = [...state.recommendations];
-      
-      // If there's already an active recommendation, we should probably mark it as superseded/expired
-      // or just keep it in history. We'll mark the currently active one as EXPIRED if a new one arrives.
-      if (state.activeRecommendation) {
-        const activeIndex = updatedRecommendations.findIndex(r => r.id === state.activeRecommendation?.id);
-        if (activeIndex >= 0) {
-          updatedRecommendations[activeIndex] = {
-            ...updatedRecommendations[activeIndex],
-            status: "EXPIRED",
-          };
-        }
-      }
+  subscribe: (fanId: string) => {
+    const currentUnsubscribe = get().unsubscribeFn;
+    if (currentUnsubscribe) currentUnsubscribe();
 
-      updatedRecommendations.push(recommendation);
-
-      return {
-        recommendations: updatedRecommendations,
-        activeRecommendation: recommendation,
-      };
+    const unsubscribe = RecommendationRepository.subscribeToFanRecommendations(fanId, (recs) => {
+      // Set the first ACTIVE recommendation as activeRecommendation
+      const active = recs.find(r => r.status === "ACTIVE") || null;
+      set({
+        recommendations: recs,
+        activeRecommendation: active
+      });
     });
+
+    set({ unsubscribeFn: unsubscribe });
   },
 
-  updateStatus: (id, status) => {
-    set((state) => {
-      const updatedRecommendations = state.recommendations.map((rec) =>
-        rec.id === id ? { ...rec, status } : rec
-      );
-
-      const active = state.activeRecommendation?.id === id 
-        ? { ...state.activeRecommendation, status } 
-        : state.activeRecommendation;
-      
-      // If status is no longer ACTIVE, remove it from activeRecommendation
-      const newActive = status === "ACTIVE" ? active : null;
-
-      return {
-        recommendations: updatedRecommendations,
-        activeRecommendation: newActive,
-      };
-    });
+  unsubscribe: () => {
+    const currentUnsubscribe = get().unsubscribeFn;
+    if (currentUnsubscribe) currentUnsubscribe();
+    set({ unsubscribeFn: null });
   },
+
+  // updateStatus is removed, we update via Firestore directly
 
   dismissActive: () => {
-    const { activeRecommendation, updateStatus } = get();
+    const { activeRecommendation } = get();
     if (activeRecommendation) {
-      updateStatus(activeRecommendation.id, "DISMISSED");
+      RecommendationRepository.updateRecommendationStatus(activeRecommendation.id, "DISMISSED").catch(console.error);
     }
   },
 
   completeActive: () => {
-    const { activeRecommendation, updateStatus } = get();
+    const { activeRecommendation } = get();
     if (activeRecommendation) {
-      updateStatus(activeRecommendation.id, "COMPLETED");
+      RecommendationRepository.updateRecommendationStatus(activeRecommendation.id, "COMPLETED").catch(console.error);
     }
   },
 
   expirePastRecommendations: (currentTime: string) => {
-    set((state) => {
-      let changed = false;
-      const updatedRecommendations = state.recommendations.map((rec) => {
-        if (rec.status === "ACTIVE" && rec.expiresAt && new Date(rec.expiresAt) < new Date(currentTime)) {
-          changed = true;
-          return { ...rec, status: "EXPIRED" as RecommendationStatus };
-        }
-        return rec;
-      });
-
-      if (!changed) return state;
-
-      const active = state.activeRecommendation;
-      const isNowExpired = active?.expiresAt && new Date(active.expiresAt) < new Date(currentTime);
-
-      return {
-        recommendations: updatedRecommendations,
-        activeRecommendation: isNowExpired ? null : state.activeRecommendation,
-      };
+    const { recommendations } = get();
+    recommendations.forEach(rec => {
+      if (rec.status === "ACTIVE" && rec.expiresAt && new Date(rec.expiresAt) < new Date(currentTime)) {
+        RecommendationRepository.updateRecommendationStatus(rec.id, "EXPIRED").catch(console.error);
+      }
     });
   },
 }));

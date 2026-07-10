@@ -19,7 +19,7 @@ function Progress({
     >
       {children}
       <ProgressTrack>
-        <ProgressIndicator />
+        <ProgressIndicator style={{ width: `${value != null ? value : 0}%` }} />
       </ProgressTrack>
     </ProgressPrimitive.Root>
   )
@@ -45,7 +45,7 @@ function ProgressIndicator({
   return (
     <ProgressPrimitive.Indicator
       data-slot="progress-indicator"
-      className={cn("h-full bg-primary transition-all", className)}
+      className={cn("h-full bg-[var(--accent-amber)] transition-all", className)}
       {...props}
     />
   )

@@ -9,8 +9,10 @@ import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useFanState } from "@/store/FanStateProvider";
 import { buildFanContext, type OnboardingFormData } from "@/engine/contextBuilder";
+import { STADIUMS, STADIUM_ZONES } from "@/lib/constants";
 
 const STEPS = [
+  { label: "Account Setup", description: "Create your fan profile" },
   { label: "Match Info", description: "Select your upcoming match details" },
   { label: "Travel Profile", description: "How are you getting to the stadium?" },
   { label: "Preferences", description: "What matters most to you?" },
@@ -23,11 +25,11 @@ export function OnboardingWizard() {
   const { setFanContext } = useFanState();
   const [step, setStep] = useState<number>(0);
   
-  // Flat form data state
   const [data, setData] = useState<Partial<OnboardingFormData>>({
-    displayName: "Alex Martinez",
+    fanId: "",
+    password: "",
     matchId: "m_weekend_derby",
-    stadiumId: "s_midfielder_arena",
+    stadiumId: "",
     section: "",
     modeOfTransport: "",
     arrivalTime: "",
@@ -55,10 +57,11 @@ export function OnboardingWizard() {
   const back = () => setStep((s) => Math.max(s - 1, 0));
 
   const canProceed = () => {
-    if (step === 0) return data.section !== "";
-    if (step === 1) return data.modeOfTransport !== "" && data.arrivalTime !== "" && data.departurePlan !== "";
-    if (step === 2) return data.favoriteTeam !== "";
-    return true; // Steps 3 and 4 (Accessibility and Review) don't have hard requirements
+    if (step === 0) return data.fanId !== "" && data.password !== "";
+    if (step === 1) return data.stadiumId !== "" && data.section !== "";
+    if (step === 2) return data.modeOfTransport !== "" && data.arrivalTime !== "" && data.departurePlan !== "";
+    if (step === 3) return data.favoriteTeam !== "";
+    return true; // Steps 4 and 5 (Accessibility and Review) don't have hard requirements
   };
 
   const handleComplete = () => {
@@ -95,10 +98,49 @@ export function OnboardingWizard() {
         <div className="px-6 py-6 min-h-[400px]">
           <AnimatePresence mode="wait">
             
-            {/* STEP 0: MATCH INFO */}
+            {/* STEP 0: ACCOUNT SETUP */}
             {step === 0 && (
               <motion.div
                 key="step0"
+                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}
+                className="space-y-6"
+              >
+                <div>
+                  <h2 className="text-xl font-bold text-[var(--text-primary)]">Account Setup</h2>
+                  <p className="text-sm text-[var(--text-secondary)]">Let's start with the basics for your fan profile.</p>
+                </div>
+                
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Fan ID</label>
+                    <input 
+                      type="text" 
+                      placeholder="e.g. manu_fan_123" 
+                      value={data.fanId || ""}
+                      onChange={(e) => updateData({ fanId: e.target.value.toLowerCase().replace(/\s+/g, '-') })}
+                      className="w-full bg-[var(--bg-elevated)] border border-[var(--border-subtle)] rounded-lg px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-amber)] transition-colors"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Password</label>
+                    <input 
+                      type="password" 
+                      placeholder="Enter a strong password" 
+                      value={data.password || ""}
+                      onChange={(e) => updateData({ password: e.target.value })}
+                      className="w-full bg-[var(--bg-elevated)] border border-[var(--border-subtle)] rounded-lg px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-amber)] transition-colors"
+                      required
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* STEP 1: MATCH INFO */}
+            {step === 1 && (
+              <motion.div
+                key="step1"
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}
                 className="space-y-6"
               >
@@ -109,20 +151,25 @@ export function OnboardingWizard() {
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Match & Stadium (Demo defaults)</label>
-                    <div className="flex items-center gap-3 p-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)]">
-                      <MapPin className="h-5 w-5 text-[var(--text-muted)]" />
-                      <div>
-                        <p className="text-sm font-medium">MIDFIELDER Derby</p>
-                        <p className="text-xs text-[var(--text-muted)]">MIDFIELDER Arena</p>
-                      </div>
-                    </div>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Match & Stadium</label>
+                    <select 
+                      value={data.stadiumId || ""}
+                      onChange={(e) => updateData({ stadiumId: e.target.value })}
+                      className="w-full bg-[var(--bg-elevated)] border border-[var(--border-subtle)] rounded-lg px-4 py-3 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-amber)] transition-colors appearance-none mb-2"
+                    >
+                      <option value="" disabled>Select Stadium</option>
+                      {STADIUMS.map((stadium) => (
+                        <option key={stadium.id} value={stadium.id}>
+                          {stadium.name} ({stadium.city})
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   <div>
                     <label className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Section</label>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                      {["North Stand", "South Stand", "East Stand", "West Stand", "VIP Lounge", "Away Section"].map((section) => (
+                      {STADIUM_ZONES.map((section) => (
                         <button
                           key={section}
                           onClick={() => updateData({ section })}
@@ -153,10 +200,10 @@ export function OnboardingWizard() {
               </motion.div>
             )}
 
-            {/* STEP 1: TRAVEL PROFILE */}
-            {step === 1 && (
+            {/* STEP 2: TRAVEL PROFILE */}
+            {step === 2 && (
               <motion.div
-                key="step1"
+                key="step2"
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}
                 className="space-y-6"
               >
@@ -243,10 +290,10 @@ export function OnboardingWizard() {
               </motion.div>
             )}
 
-            {/* STEP 2: PREFERENCES */}
-            {step === 2 && (
+            {/* STEP 3: PREFERENCES */}
+            {step === 3 && (
               <motion.div
-                key="step2"
+                key="step3"
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}
                 className="space-y-6"
               >
@@ -327,10 +374,10 @@ export function OnboardingWizard() {
               </motion.div>
             )}
 
-            {/* STEP 3: ACCESSIBILITY */}
-            {step === 3 && (
+            {/* STEP 4: ACCESSIBILITY */}
+            {step === 4 && (
               <motion.div
-                key="step3"
+                key="step4"
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}
                 className="space-y-6"
               >
@@ -368,10 +415,10 @@ export function OnboardingWizard() {
               </motion.div>
             )}
 
-            {/* STEP 4: REVIEW */}
-            {step === 4 && (
+            {/* STEP 5: REVIEW */}
+            {step === 5 && (
               <motion.div
-                key="step4"
+                key="step5"
                 initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4 }}
                 className="space-y-6"
               >
@@ -389,8 +436,8 @@ export function OnboardingWizard() {
                 <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] p-5 space-y-4">
                   <div className="grid grid-cols-2 gap-y-4 text-sm">
                     <div>
-                      <p className="text-xs text-[var(--text-muted)] uppercase tracking-wider mb-1">Fan Name</p>
-                      <p className="font-medium text-[var(--text-primary)]">{data.displayName}</p>
+                      <p className="text-xs text-[var(--text-muted)] uppercase tracking-wider mb-1">Fan ID</p>
+                      <p className="font-medium text-[var(--text-primary)]">{data.fanId}</p>
                     </div>
                     <div>
                       <p className="text-xs text-[var(--text-muted)] uppercase tracking-wider mb-1">Team</p>
@@ -406,6 +453,7 @@ export function OnboardingWizard() {
                     </div>
                   </div>
                 </div>
+
 
                 <Button
                   onClick={handleComplete}

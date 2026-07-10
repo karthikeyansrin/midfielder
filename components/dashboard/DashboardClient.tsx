@@ -81,13 +81,13 @@ export function DashboardClient() {
 
       {/* 5. Recommendation History (Collapsed) */}
       <div className="pt-8 border-t border-[var(--border-subtle)]">
-        <button 
+        {/* <button 
           onClick={() => setShowHistory(!showHistory)}
           className="flex items-center gap-2 text-sm font-semibold text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors mx-auto"
         >
           {showHistory ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           Past Recommendations
-        </button>
+        </button> */}
         
         <AnimatePresence>
           {showHistory && (

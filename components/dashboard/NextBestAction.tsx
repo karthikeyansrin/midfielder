@@ -19,15 +19,23 @@ const PRIORITY_STYLES: Record<RecommendationPriority, { color: string; bg: strin
 
 export function NextBestAction() {
   const { fanContext } = useFanState();
-  const { events } = useEventEngine();
-  const { activeRecommendation, addRecommendation, dismissActive, completeActive, expirePastRecommendations } = useRecommendationStore();
+  const { events, matchStatus } = useEventEngine();
+  const { activeRecommendation, subscribe, unsubscribe, dismissActive, completeActive, expirePastRecommendations } = useRecommendationStore();
   
   const [isProcessing, setIsProcessing] = useState(false);
   const [now, setNow] = useState(new Date().toISOString());
   
-  // To avoid rapid flickering, we'll store a pending recommendation and only show it after the fake delay
-  const [pendingRecommendation, setPendingRecommendation] = useState<Recommendation | null>(null);
   const [showThinking, setShowThinking] = useState(false);
+
+  // Subscribe to recommendations
+  useEffect(() => {
+    if (fanContext?.id) {
+      subscribe(fanContext.id);
+    }
+    return () => {
+      unsubscribe();
+    };
+  }, [fanContext?.id, subscribe, unsubscribe]);
 
   const activeEvents = events.filter((e: StadiumEvent) => e.status === "active" || e.status === "investigating");
 
@@ -55,24 +63,18 @@ export function NextBestAction() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          fan: fanContext,
-          events: activeEvents
+          fanId: fanContext.id,
+          matchStatus: matchStatus
         }),
       });
 
       if (res.ok) {
-        const data = await res.json();
-        if (data.recommendation) {
-          // Instead of adding immediately, we queue it up and apply an artificial delay
-          // so the user actually perceives the "Decision Engine Running..." state.
-          setPendingRecommendation(data.recommendation);
-        } else {
-          // If null (no relevant events), we can just clear it quickly
-          setPendingRecommendation(null);
-          setTimeout(() => {
-            setShowThinking(false);
-          }, 300);
-        }
+        // Wait an artificial delay to show the thinking state
+        setTimeout(() => {
+          setShowThinking(false);
+        }, 800 + Math.random() * 400);
+      } else {
+        setShowThinking(false);
       }
     } catch (error) {
       console.error("Failed to fetch recommendation", error);
@@ -80,24 +82,13 @@ export function NextBestAction() {
     } finally {
       setIsProcessing(false);
     }
-  }, [fanContext, activeEvents]); // Note: removing addRecommendation from deps to avoid re-trigger loops
-
-  // Apply the pending recommendation after a cinematic delay
-  useEffect(() => {
-    if (pendingRecommendation && showThinking) {
-      const timer = setTimeout(() => {
-        addRecommendation(pendingRecommendation);
-        setShowThinking(false);
-        setPendingRecommendation(null);
-      }, 800 + Math.random() * 400); // 800 - 1200ms delay for that "AI is thinking" feel
-      return () => clearTimeout(timer);
-    }
-  }, [pendingRecommendation, showThinking, addRecommendation]);
+  }, [fanContext?.id, activeEvents.length, matchStatus]); 
 
   const dependenciesString = JSON.stringify({ 
     fanId: fanContext?.id, 
     eventsCount: activeEvents.length,
-    eventsMap: activeEvents.map((e: StadiumEvent) => e.id + e.status).join(",")
+    eventsMap: activeEvents.map((e: StadiumEvent) => e.id + e.status).join(","),
+    matchStatus
   });
 
   useEffect(() => {

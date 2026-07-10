@@ -5,7 +5,7 @@
 // ─────────────────────────────────────────────
 
 import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
-import { getFirestore, type Firestore } from "firebase/firestore";
+import { getFirestore, initializeFirestore, type Firestore } from "firebase/firestore";
 import { getAuth, type Auth } from "firebase/auth";
 
 const firebaseConfig = {
@@ -16,6 +16,8 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
+
+console.log("[FIREBASE CONFIG]:", JSON.stringify(firebaseConfig));
 
 /** Singleton Firebase app instance */
 let app: FirebaseApp;
@@ -35,7 +37,14 @@ function getFirebaseApp(): FirebaseApp {
 
 export function getFirestoreDb(): Firestore {
   if (!db) {
-    db = getFirestore(getFirebaseApp());
+    // In Next.js SSR/API routes, the Firebase client SDK can crash the Node process
+    // with gRPC 'Listen' stream errors. Forcing long polling fixes this instability.
+    try {
+      db = initializeFirestore(getFirebaseApp(), { experimentalForceLongPolling: true });
+    } catch (e) {
+      // If already initialized somewhere else
+      db = getFirestore(getFirebaseApp());
+    }
   }
   return db;
 }

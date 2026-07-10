@@ -8,8 +8,7 @@ import { GoogleGenerativeAI, type GenerativeModel } from "@google/generative-ai"
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY ?? "";
 
 // Default model to use — override per-request as needed
-export const DEFAULT_GEMINI_MODEL = "gemini-2.5-pro" as const;
-export const FAST_GEMINI_MODEL = "gemini-2.5-flash" as const;
+export const DEFAULT_GEMINI_MODEL = "gemini-3.1-flash-lite" as const;
 
 let genAI: GoogleGenerativeAI | null = null;
 

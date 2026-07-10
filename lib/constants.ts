@@ -11,7 +11,6 @@ export const APP_VERSION = "0.1.0" as const;
 export const NAV_LINKS = [
   { label: "Features", href: "#features" },
   { label: "How It Works", href: "#how-it-works" },
-  { label: "Stats", href: "#stats" },
 ] as const;
 
 export const DASHBOARD_NAV = [
@@ -22,11 +21,6 @@ export const DASHBOARD_NAV = [
 export const ADMIN_NAV = [
   { label: "Overview", href: "/admin", icon: "LayoutDashboard" },
   { label: "Stadium", href: "/admin/stadium", icon: "Building2" },
-  { label: "Fans", href: "/admin/fans", icon: "Users" },
-  { label: "Matches", href: "/admin/matches", icon: "Trophy" },
-  { label: "Simulator", href: "/admin/simulator", icon: "Activity" },
-  { label: "Analytics", href: "/admin/analytics", icon: "BarChart3" },
-  { label: "Settings", href: "/admin/settings", icon: "Settings" },
 ] as const;
 
 // Fan tiers
@@ -50,19 +44,41 @@ export const DEFAULT_PAGE_SIZE = 20;
 
 // Stadium zones
 export const STADIUM_ZONES = [
-  "North Stand",
-  "South Stand",
-  "East Stand",
-  "West Stand",
+  "North Gate",
+  "South Gate",
+  "East Gate",
+  "West Gate",
   "VIP Lounge",
-  "Press Box",
-  "Family Zone",
+  "Section 101",
+  "Section 102",
+  "Food Court A",
+  "Merch Stand 1",
 ] as const;
 
-// Mock stadium details
-export const STADIUM_INFO = {
-  name: "MIDFIELDER Arena",
-  capacity: 60000,
-  city: "London",
-  country: "England",
-} as const;
+// Mock stadiums for selection
+export const STADIUMS = [
+  {
+    id: "s_midfielder_arena",
+    name: "MIDFIELDER ARENA I",
+    capacity: 60000,
+    city: "Chennai",
+    country: "India"
+  } ,
+  {
+    id: "s_wembley",
+    name: "MIDFIELDER ARENA II",
+    capacity: 60000,
+    city: "Chennai",
+    country: "India"
+  }//,
+  // {
+  //   id: "s_old_trafford",
+  //   name: "Old Trafford",
+  //   capacity: 74000,
+  //   city: "Manchester",
+  //   country: "England"
+  // }
+] as const;
+
+// Legacy mock stadium details (can be removed later if unused)
+export const STADIUM_INFO = STADIUMS[0];

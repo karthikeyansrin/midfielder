@@ -7,16 +7,7 @@ const FOOTER_LINKS = {
   Platform: [
     { label: "Fan Hub", href: "/dashboard" },
     { label: "Onboarding", href: "/onboarding" },
-    { label: "Admin", href: "/admin" },
-  ],
-  Resources: [
-    { label: "API Docs", href: "/api" },
-    { label: "Status", href: "/status" },
-    { label: "Changelog", href: "/changelog" },
-  ],
-  Legal: [
-    { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Service", href: "/terms" },
+    { label: "Admin", href: "/admin/login" },
   ],
 };
 
@@ -25,9 +16,9 @@ export function Footer() {
     <footer className="border-t border-[var(--border-subtle)] bg-[var(--bg-surface)]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Main footer content */}
-        <div className="grid grid-cols-2 gap-8 py-12 md:grid-cols-4">
+        <div className="flex flex-col items-center text-center gap-12 py-12 md:flex-row md:justify-center md:gap-32 md:text-left">
           {/* Brand column */}
-          <div className="col-span-2 md:col-span-1">
+          <div className="flex flex-col items-center md:items-start max-w-sm">
             <Link href="/" className="flex items-center gap-2" id="footer-logo">
               <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[var(--accent-amber)]">
                 <Zap className="h-3.5 w-3.5 text-black" strokeWidth={2.5} />
@@ -36,11 +27,11 @@ export function Footer() {
                 {APP_NAME}
               </span>
             </Link>
-            <p className="mt-3 text-xs leading-relaxed text-[var(--text-muted)]">
+            <p className="mt-4 text-xs leading-relaxed text-[var(--text-muted)]">
               The intelligent stadium fan engagement platform. Powered by AI.
               Built for matchday.
             </p>
-            <div className="mt-4 flex items-center gap-3">
+            <div className="mt-5 flex items-center gap-4">
               <a
                 href="https://github.com"
                 target="_blank"
@@ -66,11 +57,11 @@ export function Footer() {
 
           {/* Link columns */}
           {Object.entries(FOOTER_LINKS).map(([group, links]) => (
-            <div key={group}>
-              <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+            <div key={group} className="flex flex-col items-center md:items-start">
+              <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                 {group}
               </h3>
-              <ul className="space-y-2">
+              <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link.href}>
                     <Link

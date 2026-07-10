@@ -2,7 +2,7 @@ export interface MatchInfo {
   matchId: string;
   stadiumId: string;
   section: string;
-  row?: string;
+  row?: string | null;
 }
 
 export type TransportMode =
@@ -56,4 +56,5 @@ export interface FanContext {
   preferences: FanPreferences;
   accessibility: Accessibility;
   updatedAt: string;
+  password?: string;
 }

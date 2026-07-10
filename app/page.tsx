@@ -3,7 +3,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { FeaturesSection } from "@/components/landing/FeaturesSection";
-import { StatsSection } from "@/components/landing/StatsSection";
+import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
 
 export const metadata: Metadata = {
   title: "MIDFIELDER — AI-Powered Fan Engagement Platform",
@@ -18,7 +18,7 @@ export default function LandingPage() {
       <main className="flex-1">
         <HeroSection />
         <FeaturesSection />
-        <StatsSection />
+        <HowItWorksSection />
       </main>
       <Footer />
     </div>

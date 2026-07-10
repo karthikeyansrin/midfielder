@@ -12,6 +12,7 @@ import { generateId } from "@/lib/utils";
 
 // This represents the flat structure typically coming from the onboarding form state
 export interface OnboardingFormData {
+  fanId?: string;
   displayName: string;
   matchId: string;
   stadiumId: string;
@@ -31,6 +32,7 @@ export interface OnboardingFormData {
   childrenAccompanying: boolean;
   medicalAssistanceRequired: boolean;
   visualOrHearingNeeds: boolean;
+  password?: string;
 }
 
 /**
@@ -42,7 +44,7 @@ export function buildFanContext(data: OnboardingFormData): FanContext {
     matchId: data.matchId || "default-match",
     stadiumId: data.stadiumId || "default-stadium",
     section: data.section || "General",
-    row: data.row || undefined,
+    row: data.row || null,
   };
 
   const travelProfile: TravelProfile = {
@@ -70,12 +72,13 @@ export function buildFanContext(data: OnboardingFormData): FanContext {
   };
 
   return {
-    id: `fan_${generateId()}`,
-    displayName: data.displayName || "Fan",
+    id: data.fanId || `fan_${generateId()}`,
+    displayName: data.fanId || "Fan",
     matchInfo,
     travelProfile,
     preferences,
     accessibility,
     updatedAt: new Date().toISOString(),
+    ...(data.password ? { password: data.password } : {}),
   };
 }

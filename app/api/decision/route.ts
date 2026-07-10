@@ -1,36 +1,46 @@
 import { NextResponse } from "next/server";
-import { DecisionEngine } from "@/engine/decisionEngine";
-import { FanContext } from "@/domain/fan/FanContext";
-import { StadiumEvent } from "@/domain/events/StadiumEvent";
+import { DecisionCoordinator } from "@/engine/decisionCoordinator";
+import { FanRepository } from "@/repositories/FanRepository";
+import { EventRepository } from "@/repositories/EventRepository";
+import { RecommendationRepository } from "@/repositories/RecommendationRepository";
 
 interface DecisionRequest {
-  fan: FanContext;
-  events: StadiumEvent[];
+  fanId: string;
+  matchStatus?: any;
 }
 
 export async function POST(request: Request) {
   try {
     const body: DecisionRequest = await request.json();
 
-    if (!body.fan || !body.events) {
+    if (!body.fanId) {
       return NextResponse.json(
-        { error: "Missing fan context or events in request body" },
+        { error: "Missing fanId in request body" },
         { status: 400 }
       );
     }
 
-    // The API acts as the boundary, delegating to the DecisionEngine
-    // which internally constructs the trusted DecisionContext.
-    const recommendation = await DecisionEngine.generateNextBestAction(
-      body.fan,
-      body.events
-    );
-
-    if (!recommendation) {
-      return NextResponse.json({ recommendation: null });
+    const fan = await FanRepository.getFan(body.fanId);
+    if (!fan) {
+      return NextResponse.json(
+        { error: "Fan not found" },
+        { status: 404 }
+      );
     }
 
-    return NextResponse.json({ recommendation });
+    const activeEvents = await EventRepository.getActiveEvents();
+
+    const result = await DecisionCoordinator.requestDecision(
+      fan,
+      activeEvents,
+      body.matchStatus
+    );
+
+    if (result.status === "generated" && result.recommendation) {
+      await RecommendationRepository.saveRecommendation(result.recommendation, fan.id);
+    }
+
+    return NextResponse.json(result);
   } catch (error) {
     console.error("Error in /api/decision:", error);
     return NextResponse.json(

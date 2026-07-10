@@ -1,5 +1,6 @@
 import { EventProvider } from './EventProvider';
 import { StadiumEvent, EventCategory, EventSeverity } from '../../../domain/events/StadiumEvent';
+import { STADIUM_ZONES } from '../../../lib/constants';
 
 interface EventTemplate {
   title: string;
@@ -15,10 +16,14 @@ export class SimulatorProvider implements EventProvider {
   private timer: NodeJS.Timeout | null = null;
   private onEventPublished: ((event: StadiumEvent) => void) | null = null;
   private _isPaused: boolean = false;
-  private intervalMs: number = 15000;
+  private intervalMs: number = 30000;
+  
+  public matchStatus: "pre_match" | "kickoff" | "first_half" | "half_time" | "second_half" | "full_time" = "pre_match";
+  private matchStatusTimer: NodeJS.Timeout | null = null;
+  private onMatchStatusChanged: ((status: string) => void) | null = null;
 
-  // Real-world stadium zones
-  private zones = ['North Gate', 'South Gate', 'East Gate', 'West Gate', 'VIP Lounge', 'Section 101', 'Section 102', 'Food Court A', 'Merch Stand 1'];
+  // Real-world stadium zones from constants
+  private zones = [...STADIUM_ZONES];
 
   // Event templates with probabilities
   private eventTemplates: EventTemplate[] = [
@@ -88,15 +93,47 @@ export class SimulatorProvider implements EventProvider {
     },
   ];
 
-  public start(onEventPublished: (event: StadiumEvent) => void, intervalMs: number = 15000): void {
+  public start(onEventPublished: (event: StadiumEvent) => void, intervalMs: number = 30000): void {
     this.onEventPublished = onEventPublished;
     this.intervalMs = intervalMs;
     this._isPaused = false;
     
     this.startTimer();
+    this.startMatchStatusTimer();
 
     // Generate an initial event immediately
     this.generateEvent();
+  }
+
+  public setMatchStatusCallback(callback: (status: string) => void) {
+    this.onMatchStatusChanged = callback;
+    callback(this.matchStatus);
+  }
+
+  private startMatchStatusTimer(): void {
+    if (this.matchStatusTimer) clearInterval(this.matchStatusTimer);
+    
+    // Progress match status every 2 minutes for demo purposes
+    this.matchStatusTimer = setInterval(() => {
+      if (this._isPaused) return;
+      
+      const progression = {
+        "pre_match": "kickoff",
+        "kickoff": "first_half",
+        "first_half": "half_time",
+        "half_time": "second_half",
+        "second_half": "full_time",
+        "full_time": "full_time" // stays here
+      } as const;
+
+      const next = progression[this.matchStatus];
+      if (next !== this.matchStatus) {
+        this.matchStatus = next;
+        if (this.onMatchStatusChanged) {
+          this.onMatchStatusChanged(this.matchStatus);
+        }
+      }
+    }, 120000); // 2 minutes
   }
 
   private startTimer(): void {
@@ -114,12 +151,17 @@ export class SimulatorProvider implements EventProvider {
       clearInterval(this.timer);
       this.timer = null;
     }
+    if (this.matchStatusTimer) {
+      clearInterval(this.matchStatusTimer);
+      this.matchStatusTimer = null;
+    }
   }
 
   public resume(): void {
     if (this._isPaused) {
       this._isPaused = false;
       this.startTimer();
+      this.startMatchStatusTimer();
     }
   }
 
@@ -136,7 +178,12 @@ export class SimulatorProvider implements EventProvider {
       clearInterval(this.timer);
       this.timer = null;
     }
+    if (this.matchStatusTimer) {
+      clearInterval(this.matchStatusTimer);
+      this.matchStatusTimer = null;
+    }
     this.onEventPublished = null;
+    this.onMatchStatusChanged = null;
   }
 
   private generateEvent(): void {
