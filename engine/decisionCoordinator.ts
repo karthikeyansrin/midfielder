@@ -21,11 +21,24 @@ export interface CoordinatorResult {
   recommendation?: Recommendation | null;
 }
 
+/**
+ * Concurrency and state manager for AI decision requests.
+ * 
+ * Purpose: Acts as a gatekeeper to prevent quota burn and duplicate Gemini API calls. It hashes context to detect meaningful changes, enforces cooldown periods, and handles concurrency locks.
+ * 
+ * Inputs:
+ * - fan: FanContext (The fan requesting a decision)
+ * - allActiveEvents: StadiumEvent[] (Current stadium events)
+ * - matchStatus?: string (Optional current match state)
+ * 
+ * Outputs:
+ * - Promise<CoordinatorResult>: Returns the status of the request (cached, cooldown, processing, generated) and optionally the generated Recommendation.
+ */
 export class DecisionCoordinator {
   static async requestDecision(
     fan: FanContext,
     allActiveEvents: StadiumEvent[],
-    matchStatus?: any
+    matchStatus?: string
   ): Promise<CoordinatorResult> {
     const now = Date.now();
     const fanId = fan.id;

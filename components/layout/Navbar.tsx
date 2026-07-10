@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Bell, ChevronDown, Menu, X, Zap } from "lucide-react";
+import { ChevronDown, Menu, X, Zap } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { APP_NAME, NAV_LINKS } from "@/lib/constants";

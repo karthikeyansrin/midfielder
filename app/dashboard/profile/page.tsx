@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useFanState } from "@/store/FanStateProvider";
 import { User, MapPin, Car, ShieldAlert, Heart, Settings, Navigation, Edit2, Check, X } from "lucide-react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 
 export default function FanProfilePage() {
   const { fanContext, setFanContext } = useFanState();

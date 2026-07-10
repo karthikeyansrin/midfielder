@@ -27,7 +27,7 @@ export function MatchWidget() {
         {isLive ? (
           <div className="flex items-center gap-1.5 rounded bg-[var(--accent-red-glow)] px-1.5 py-0.5">
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-red)] animate-pulse shadow-[0_0_4px_var(--accent-red)]" />
-            <span className="text-[10px] font-bold text-[var(--accent-red)] uppercase tracking-wider">{match.minute}'</span>
+            <span className="text-[10px] font-bold text-[var(--accent-red)] uppercase tracking-wider">{match.minute}&apos;</span>
           </div>
         ) : (
           <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">{displayStatus}</span>

@@ -1,4 +1,4 @@
-import { Recommendation, RecommendationReason, RecommendationPriority } from "@/domain/recommendation/Recommendation";
+import { Recommendation, RecommendationReason } from "@/domain/recommendation/Recommendation";
 import { generateId } from "@/lib/utils";
 import { calculatePriority, getExpirationTime } from "./priorityEngine";
 import { StadiumEvent } from "@/domain/events/StadiumEvent";
@@ -19,7 +19,7 @@ export interface GeminiRecommendationOutput {
  * Validates and maps the Gemini output to our internal Domain Model.
  */
 export function buildRecommendation(
-  parsedOutput: any,
+  parsedOutput: Partial<GeminiRecommendationOutput>,
   relevantEvents: StadiumEvent[],
   currentTime: string
 ): Recommendation {

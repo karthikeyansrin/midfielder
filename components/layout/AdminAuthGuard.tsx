@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useLayoutEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
 export function AdminAuthGuard({ children }: { children: React.ReactNode }) {
@@ -9,19 +9,20 @@ export function AdminAuthGuard({ children }: { children: React.ReactNode }) {
   const [isAuthed, setIsAuthed] = useState(false);
 
   useEffect(() => {
-    // Don't guard the login page itself
-    if (pathname === "/admin/login") {
-      setIsAuthed(true);
-      return;
-    }
+    if (pathname === "/admin/login") return;
 
     const authed = localStorage.getItem("midfielder_admin_auth");
     if (authed === "true") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsAuthed(true);
     } else {
       router.push("/admin/login");
     }
   }, [router, pathname]);
+
+  if (pathname === "/admin/login") {
+    return <>{children}</>;
+  }
 
   if (!isAuthed) {
     return (

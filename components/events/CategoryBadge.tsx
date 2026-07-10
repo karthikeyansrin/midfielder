@@ -1,5 +1,4 @@
 import { EventCategory } from "@/domain/events/StadiumEvent";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { ShieldAlert, Stethoscope, Wrench, Users, CloudRain, Settings, Trophy, Tag } from "lucide-react";
 

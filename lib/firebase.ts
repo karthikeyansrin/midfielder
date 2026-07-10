@@ -17,7 +17,6 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-console.log("[FIREBASE CONFIG]:", JSON.stringify(firebaseConfig));
 
 /** Singleton Firebase app instance */
 let app: FirebaseApp;
@@ -41,7 +40,7 @@ export function getFirestoreDb(): Firestore {
     // with gRPC 'Listen' stream errors. Forcing long polling fixes this instability.
     try {
       db = initializeFirestore(getFirebaseApp(), { experimentalForceLongPolling: true });
-    } catch (e) {
+    } catch {
       // If already initialized somewhere else
       db = getFirestore(getFirebaseApp());
     }

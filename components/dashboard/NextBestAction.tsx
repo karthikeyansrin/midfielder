@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useFanState } from "@/store/FanStateProvider";
 import { useEventEngine } from "@/hooks/useEventEngine";
 import { useRecommendationStore } from "@/store/recommendationStore";
-import { RecommendationPriority, Recommendation } from "@/domain/recommendation/Recommendation";
+import { RecommendationPriority } from "@/domain/recommendation/Recommendation";
 import { AlertCircle, Clock, CheckCircle2, Info, Navigation, Activity, Loader2 } from "lucide-react";
 import { StadiumEvent } from "@/domain/events/StadiumEvent";
 
@@ -22,8 +22,7 @@ export function NextBestAction() {
   const { events, matchStatus } = useEventEngine();
   const { activeRecommendation, subscribe, unsubscribe, dismissActive, completeActive, expirePastRecommendations } = useRecommendationStore();
   
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [now, setNow] = useState(new Date().toISOString());
+
   
   const [showThinking, setShowThinking] = useState(false);
 
@@ -43,7 +42,6 @@ export function NextBestAction() {
   useEffect(() => {
     const interval = setInterval(() => {
       const currentTime = new Date().toISOString();
-      setNow(currentTime);
       expirePastRecommendations(currentTime);
     }, 5000);
     return () => clearInterval(interval);
@@ -57,7 +55,6 @@ export function NextBestAction() {
       setShowThinking(true);
     }
     
-    setIsProcessing(true);
     try {
       const res = await fetch("/api/decision", {
         method: "POST",
@@ -80,9 +77,9 @@ export function NextBestAction() {
       console.error("Failed to fetch recommendation", error);
       setShowThinking(false);
     } finally {
-      setIsProcessing(false);
+      // Done processing
     }
-  }, [fanContext?.id, activeEvents.length, matchStatus]); 
+  }, [fanContext, activeEvents.length, matchStatus]); 
 
   const dependenciesString = JSON.stringify({ 
     fanId: fanContext?.id, 
@@ -92,6 +89,7 @@ export function NextBestAction() {
   });
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchRecommendation();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dependenciesString]);
@@ -112,7 +110,7 @@ export function NextBestAction() {
           >
             <Loader2 className="w-10 h-10 text-[var(--accent-amber)] animate-spin mb-4" />
             <h2 className="text-xl font-bold text-[var(--text-primary)]">MIDFIELDER is analyzing the stadium...</h2>
-            <p className="text-[var(--text-secondary)] mt-2">Evaluating live stadium context</p>
+            <p className="text-sm text-[var(--text-secondary)]">Your AI assistant hasn&apos;t generated any insights yet.</p>
           </motion.div>
         ) : !activeRecommendation ? (
           <motion.div
@@ -124,7 +122,7 @@ export function NextBestAction() {
           >
             <div>
               <h2 className="text-2xl font-bold text-[var(--text-primary)]">
-                You're all set.
+                You&apos;re all set.
               </h2>
               <p className="text-[var(--text-secondary)] mt-2">
                 MIDFIELDER is monitoring the stadium and will let you know if your situation changes.

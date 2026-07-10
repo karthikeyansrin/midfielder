@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Recommendation, RecommendationStatus } from "@/domain/recommendation/Recommendation";
+import { Recommendation } from "@/domain/recommendation/Recommendation";
 import { RecommendationRepository } from "@/repositories/RecommendationRepository";
 
 interface RecommendationState {

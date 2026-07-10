@@ -1,4 +1,4 @@
-import { collection, doc, setDoc, updateDoc, onSnapshot, query, where, orderBy, getDocs } from "firebase/firestore";
+import { collection, doc, setDoc, updateDoc, onSnapshot, query, where } from "firebase/firestore";
 import { getFirestoreDb } from "@/lib/firebase";
 import { Recommendation } from "@/domain/recommendation/Recommendation";
 

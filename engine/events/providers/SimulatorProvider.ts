@@ -11,6 +11,18 @@ interface EventTemplate {
   probabilityWeight: number;
 }
 
+/**
+ * Autonomous stadium event generator for the hackathon demo.
+ * 
+ * Purpose: Simulates real-world operational and safety events (e.g., medical emergencies, gate closures) in a loop, pushing them to the EventRepository to trigger AI decisions.
+ * 
+ * Inputs:
+ * - (Constructor): None required.
+ * - start(onEventPublished, intervalMs): Callback to execute when a new event fires, and the polling interval.
+ * 
+ * Outputs:
+ * - Generates and pushes `StadiumEvent` objects via the provided callback.
+ */
 export class SimulatorProvider implements EventProvider {
   public readonly name = 'SimulatorProvider';
   private timer: NodeJS.Timeout | null = null;

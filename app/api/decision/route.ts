@@ -6,7 +6,7 @@ import { RecommendationRepository } from "@/repositories/RecommendationRepositor
 
 interface DecisionRequest {
   fanId: string;
-  matchStatus?: any;
+  matchStatus?: string;
 }
 
 export async function POST(request: Request) {

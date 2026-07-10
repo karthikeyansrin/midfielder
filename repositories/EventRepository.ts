@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, setDoc, updateDoc, onSnapshot, query, where, orderBy, getDoc } from "firebase/firestore";
+import { collection, doc, setDoc, updateDoc, onSnapshot, query, where, getDocs } from "firebase/firestore";
 import { getFirestoreDb } from "@/lib/firebase";
 import { StadiumEvent } from "@/domain/events/StadiumEvent";
 
@@ -14,7 +14,7 @@ export class EventRepository {
   static async updateEventStatus(id: string, status: string, notes?: string): Promise<void> {
     const db = getFirestoreDb();
     const docRef = doc(db, COLLECTION_NAME, id);
-    const updateData: any = { status };
+    const updateData: Record<string, unknown> = { status };
     if (notes) {
       updateData["metadata.notes"] = notes;
     }

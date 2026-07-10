@@ -17,7 +17,7 @@ export interface StadiumEvent {
   description: string;
   location: Location;
   affectedZones: string[];
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   status: EventStatus;
   source: string;
 }

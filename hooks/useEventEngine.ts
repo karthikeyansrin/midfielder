@@ -13,27 +13,56 @@ simulator.start((event) => {
   EventRepository.saveEvent(event).catch(console.error);
 });
 
+// --- Shared State & Deduplication ---
+let cachedEvents: StadiumEvent[] = [];
+const eventListeners = new Set<(events: StadiumEvent[]) => void>();
+let unsubscribeFromFirestore: (() => void) | null = null;
+
+function subscribeToSharedEvents(callback: (events: StadiumEvent[]) => void) {
+  eventListeners.add(callback);
+  callback(cachedEvents);
+
+  if (!unsubscribeFromFirestore) {
+    unsubscribeFromFirestore = EventRepository.subscribeToActiveEvents((newEvents) => {
+      cachedEvents = newEvents;
+      eventListeners.forEach(listener => listener(newEvents));
+    });
+  }
+
+  return () => {
+    eventListeners.delete(callback);
+    if (eventListeners.size === 0 && unsubscribeFromFirestore) {
+      unsubscribeFromFirestore();
+      unsubscribeFromFirestore = null;
+    }
+  };
+}
+
+let currentMatchStatus: string = simulator.matchStatus;
+const statusListeners = new Set<(status: string) => void>();
+
+simulator.setMatchStatusCallback((status) => {
+  currentMatchStatus = status;
+  statusListeners.forEach(l => l(status));
+});
+// ------------------------------------
+
 export function useEventEngine() {
-  const [events, setEvents] = useState<StadiumEvent[]>([]);
+  const [events, setEvents] = useState<StadiumEvent[]>(cachedEvents);
   // We need to force a re-render when simulation state changes
   const [isSimulating, setIsSimulating] = useState(!simulator.isPaused);
-  const [matchStatus, setMatchStatus] = useState<string>(simulator.matchStatus);
+  const [matchStatus, setMatchStatus] = useState<string>(currentMatchStatus);
 
   useEffect(() => {
-    setIsSimulating(!simulator.isPaused);
-
-    // Subscribe to Firestore active events
-    const unsubscribe = EventRepository.subscribeToActiveEvents((newEvents) => {
-      setEvents(newEvents);
-    });
+    const handleEvents = (newEvents: StadiumEvent[]) => setEvents(newEvents);
+    const handleStatus = (status: string) => setMatchStatus(status);
     
-    simulator.setMatchStatusCallback((status) => {
-      setMatchStatus(status);
-    });
+    const unsubscribeEvents = subscribeToSharedEvents(handleEvents);
+    statusListeners.add(handleStatus);
 
     return () => {
-      unsubscribe();
-      simulator.setMatchStatusCallback(() => {}); // Clear callback
+      unsubscribeEvents();
+      statusListeners.delete(handleStatus);
     };
   }, []);
 

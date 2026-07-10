@@ -8,17 +8,18 @@ import { RecommendationHistory } from "@/components/dashboard/RecommendationHist
 import { useFanState } from "@/store/FanStateProvider";
 import { useRecommendationStore } from "@/store/recommendationStore";
 import { NextBestAction } from "@/components/dashboard/NextBestAction";
-import { CheckSquare, ChevronDown, ChevronUp, Activity, Info } from "lucide-react";
+import { CheckSquare, Activity, Info } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function DashboardClient() {
   const router = useRouter();
   const { fanContext, isHydrated } = useFanState();
   const { activeRecommendation } = useRecommendationStore();
-  const [mounted, setMounted] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 

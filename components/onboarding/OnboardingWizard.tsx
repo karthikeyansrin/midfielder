@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight, Check, Zap, MapPin, Map, Navigation, Car, Heart, ShieldAlert } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Zap, Navigation, Car, Heart, ShieldAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -108,7 +108,7 @@ export function OnboardingWizard() {
               >
                 <div>
                   <h2 className="text-xl font-bold text-[var(--text-primary)]">Account Setup</h2>
-                  <p className="text-sm text-[var(--text-secondary)]">Let's start with the basics for your fan profile.</p>
+                  <p className="text-sm text-[var(--text-secondary)]">Let&apos;s start with the basics for your fan profile.</p>
                 </div>
                 
                 <div className="space-y-4">
@@ -116,7 +116,7 @@ export function OnboardingWizard() {
                     <label className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Fan ID</label>
                     <input 
                       type="text" 
-                      placeholder="e.g. manu_fan_123" 
+                      placeholder="e.g. portugal_fan_07" 
                       value={data.fanId || ""}
                       onChange={(e) => updateData({ fanId: e.target.value.toLowerCase().replace(/\s+/g, '-') })}
                       className="w-full bg-[var(--bg-elevated)] border border-[var(--border-subtle)] rounded-lg px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-amber)] transition-colors"
@@ -300,7 +300,7 @@ export function OnboardingWizard() {
               >
                 <div>
                   <h2 className="text-xl font-bold text-[var(--text-primary)]">Fan Preferences</h2>
-                  <p className="text-sm text-[var(--text-secondary)]">Tailor your matchday notifications and offers.</p>
+                  <p className="text-sm text-[var(--text-secondary)] mt-1">Review your details and let&apos;s get you into the match.</p>
                 </div>
                 
                 <div className="space-y-5">

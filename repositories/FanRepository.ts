@@ -19,20 +19,16 @@ export class FanRepository {
   static async saveFan(fan: FanContext): Promise<void> {
     const db = getFirestoreDb();
 
-    console.log("Saving fan:", fan);
-    console.log("Fan ID:", fan.id);
-    console.log("Type of fan.id:", typeof fan.id);
-
     const docRef = doc(db, COLLECTION_NAME, fan.id);
     
-    // Firestore rejects `undefined` values. Recursively remove them.
-    const cleanUndefined = (obj: any): any => {
+    const cleanUndefined = (obj: unknown): unknown => {
       if (Array.isArray(obj)) return obj.map(cleanUndefined);
       if (obj !== null && typeof obj === 'object') {
         return Object.keys(obj).reduce((acc, key) => {
-          if (obj[key] !== undefined) acc[key] = cleanUndefined(obj[key]);
+          const val = (obj as Record<string, unknown>)[key];
+          if (val !== undefined) acc[key] = cleanUndefined(val);
           return acc;
-        }, {} as any);
+        }, {} as Record<string, unknown>);
       }
       return obj;
     };
@@ -40,7 +36,7 @@ export class FanRepository {
     const safeFan = cleanUndefined({
       ...fan,
       updatedAt: new Date().toISOString()
-    });
+    }) as Record<string, unknown>;
 
     await setDoc(docRef, safeFan, { merge: true });
   }

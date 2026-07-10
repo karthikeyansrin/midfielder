@@ -142,7 +142,7 @@ export default function LoginPage() {
             
             <div className="px-8 py-5 border-t border-[var(--border-subtle)] bg-[var(--bg-elevated)] text-center">
               <p className="text-sm text-[var(--text-secondary)]">
-                Don't have an ID?{" "}
+                Don&apos;t have an ID?{" "}
                 <button 
                   onClick={() => router.push("/onboarding")}
                   className="font-semibold text-[var(--accent-amber)] hover:underline focus:outline-none"

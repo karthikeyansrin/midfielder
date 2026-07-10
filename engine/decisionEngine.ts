@@ -9,26 +9,57 @@ import { parseGeminiResponse } from "@/lib/parseGeminiResponse";
 import { validateRecommendation } from "@/lib/validateGeminiResponse";
 import { buildDecisionPrompt } from "@/prompts/decision.prompt";
 
+const getValidMatchState = (status?: string): "pre_match" | "in_progress" | "half_time" | "post_match" => {
+  switch (status) {
+    case "kickoff":
+    case "first_half":
+    case "second_half":
+      return "in_progress";
+    case "half_time":
+      return "half_time";
+    case "full_time":
+      return "post_match";
+    case "pre_match":
+    default:
+      return "pre_match";
+  }
+};
 export class DecisionEngine {
   /**
-   * Orchestrates the entire recommendation pipeline.
-   * Assembles context, filters events, queries Gemini, and builds the final model.
+   * Core orchestration engine for generating fan recommendations.
+   * 
+   * Purpose: Acts as the primary pipeline connecting real-time stadium events, fan context, and Gemini AI to generate actionable insights.
+   * 
+   * Inputs:
+   * - fan: FanContext (The personalized data of the fan)
+   * - allActiveEvents: StadiumEvent[] (All current live stadium operational events)
+   * - matchStatus?: string (Optional match state, e.g., 'pre_match', 'half_time')
+   * 
+   * Outputs:
+   * - Promise<Recommendation | null>: Returns a structured Recommendation object parsed from Gemini, or null if generation fails.
    */
-  static async generateNextBestAction(
+  private static buildContext(
     fan: FanContext,
     allActiveEvents: StadiumEvent[],
-    matchStatus?: any
-  ): Promise<Recommendation | null> {
+    matchStatus?: string
+  ): DecisionContext {
     const currentTime = new Date().toISOString();
-
-    // 1. Build Decision Context natively inside the engine
-    const context: DecisionContext = {
+    return {
       fan,
       activeEvents: allActiveEvents,
       currentTime,
-      matchStatus: matchStatus ? { state: matchStatus } : { state: "pre_match" },
+      matchStatus: { state: getValidMatchState(matchStatus) },
       stadiumState: { currentCapacity: 45000 } // stubbed for now
     };
+  }
+
+  static async generateNextBestAction(
+    fan: FanContext,
+    allActiveEvents: StadiumEvent[],
+    matchStatus?: string
+  ): Promise<Recommendation | null> {
+    const context = this.buildContext(fan, allActiveEvents, matchStatus);
+    const currentTime = context.currentTime;
 
     // 2. Analyze impact
     const relevantEvents = getRelevantEvents(fan, allActiveEvents);
