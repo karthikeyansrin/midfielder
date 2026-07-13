@@ -8,13 +8,28 @@ import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
 import { getFirestore, initializeFirestore, type Firestore } from "firebase/firestore";
 import { getAuth, type Auth } from "firebase/auth";
 
+declare global {
+  interface Window {
+    __RUNTIME_ENV__: Record<string, string | undefined>;
+  }
+}
+
+const getEnv = (key: string, originalKey: string) => {
+  // 1. Try to get it from the runtime injection (Cloud Run fix)
+  if (typeof window !== "undefined" && window.__RUNTIME_ENV__ && window.__RUNTIME_ENV__[key]) {
+    return window.__RUNTIME_ENV__[key];
+  }
+  // 2. Fallback to standard process.env (Local dev / Build variables)
+  return process.env[originalKey];
+};
+
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: getEnv("apiKey", "NEXT_PUBLIC_FIREBASE_API_KEY"),
+  authDomain: getEnv("authDomain", "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN"),
+  projectId: getEnv("projectId", "NEXT_PUBLIC_FIREBASE_PROJECT_ID"),
+  storageBucket: getEnv("storageBucket", "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET"),
+  messagingSenderId: getEnv("messagingSenderId", "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID"),
+  appId: getEnv("appId", "NEXT_PUBLIC_FIREBASE_APP_ID"),
 };
 
 

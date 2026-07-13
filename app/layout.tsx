@@ -46,8 +46,26 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Defeat Next.js build-time static replacement by accessing process.env dynamically
+  const env = process.env;
+  const runtimeEnv = {
+    apiKey: env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  };
+
   return (
     <html lang="en" className={`${inter.variable} dark h-full`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.__RUNTIME_ENV__ = ${JSON.stringify(runtimeEnv)};`,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col antialiased">
         <FanStateProvider>
           <TooltipProvider>{children}</TooltipProvider>
