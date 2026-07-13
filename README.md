@@ -1,5 +1,8 @@
 # MIDFIELDER ⚡
 
+**App URL**: https://midfielder-53525848512.europe-west1.run.app
+#
+
 > **The intelligent stadium fan engagement platform. Powered by AI. Built for matchday.**
 
 MIDFIELDER is a real-time, context-aware web application built for stadium operators and fans. By ingesting live stadium operational events and passing them through a smart AI Decision Engine (powered by Gemini 3.1 Flash Lite), MIDFIELDER delivers hyper-personalized, actionable recommendations directly to a fan's dashboard. 
@@ -22,6 +25,7 @@ MIDFIELDER is a real-time, context-aware web application built for stadium opera
 - **Zone Monitoring**: Real-time visual monitoring of stadium zones. As simulated events occur in specific areas (e.g., "Food Court A"), the corresponding UI zones react and display severity levels (Healthy, Warning, Critical).
 
 ### 4. Technical Highlights
+- **Realistic Tournament Context**: Incorporates real FIFA World Cup 2026 teams, match schedules, and host stadiums for an authentic demo experience, while keeping underlying operational intelligence fully AI-driven.
 - **Real-time Sync**: Firebase Firestore integration for seamless, instant state updates across all connected clients.
 - **Modern UI/UX**: Built with Next.js, Framer Motion, and Tailwind CSS. Features glassmorphism, dynamic breadcrumbs, responsive grids, and highly polished micro-animations.
 
