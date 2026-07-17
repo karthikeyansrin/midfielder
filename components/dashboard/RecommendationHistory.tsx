@@ -34,10 +34,10 @@ export function RecommendationHistory() {
     <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] overflow-hidden">
       <div className="flex items-center gap-2 px-5 py-4 border-b border-[var(--border-subtle)]">
         <History className="h-4 w-4 text-[var(--text-muted)]" />
-        <h3 className="text-sm font-semibold text-[var(--text-primary)]">Recommendation History</h3>
+        <h3 className="text-sm font-semibold text-[var(--text-primary)]">AI Recommendation History</h3>
       </div>
       
-      <ul className="divide-y divide-[var(--border-subtle)] max-h-96 overflow-y-auto scrollbar-hide">
+      <ul tabIndex={0} aria-label="Recommendation history" className="divide-y divide-[var(--border-subtle)] max-h-96 overflow-y-auto scrollbar-hide">
         {history.map((rec, i) => {
           const Icon = STATUS_ICONS[rec.status];
           const color = STATUS_COLORS[rec.status];

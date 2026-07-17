@@ -50,7 +50,7 @@ export default function AdminLoginPage() {
             <div className="p-8 sm:p-10">
               <div className="flex flex-col items-center text-center mb-8">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--accent-red-glow)] border border-[rgba(239,68,68,0.3)] mb-6">
-                  <Shield className="h-6 w-6 text-[var(--accent-red)]" strokeWidth={2.5} />
+                  <Shield aria-hidden="true" className="h-6 w-6 text-[var(--accent-red)]" strokeWidth={2.5} />
                 </div>
                 <h1 className="text-2xl font-bold text-[var(--text-primary)] tracking-tight">
                   Mission Control
@@ -63,7 +63,7 @@ export default function AdminLoginPage() {
                 </div>
               </div>
 
-              <form onSubmit={handleLogin} className="space-y-6">
+              <form onSubmit={handleLogin} aria-label="Admin login form" className="space-y-6">
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <label htmlFor="username" className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] block">
@@ -71,7 +71,7 @@ export default function AdminLoginPage() {
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <User className="h-5 w-5 text-[var(--text-muted)]" />
+                        <User aria-hidden="true" className="h-5 w-5 text-[var(--text-muted)]" />
                       </div>
                       <input
                         id="username"
@@ -91,7 +91,7 @@ export default function AdminLoginPage() {
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <User className="h-5 w-5 text-[var(--text-muted)] opacity-0" />
+                        <User aria-hidden="true" className="h-5 w-5 text-[var(--text-muted)] opacity-0" />
                       </div>
                       <input
                         id="password"
@@ -107,6 +107,7 @@ export default function AdminLoginPage() {
                   
                   {error && (
                     <motion.p 
+                      role="alert"
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       className="text-xs text-[var(--accent-red)] mt-2 font-medium"

@@ -19,6 +19,7 @@ export function MatchWidget() {
   return (
     <motion.div
       id="match-widget"
+      aria-label="Match information"
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       className="flex items-center justify-between rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-2"
@@ -26,6 +27,7 @@ export function MatchWidget() {
       <div className="flex items-center gap-3">
         {isLive ? (
           <div className="flex items-center gap-1.5 rounded bg-[var(--accent-red-glow)] px-1.5 py-0.5">
+            <span className="sr-only">Live match</span>
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-red)] animate-pulse shadow-[0_0_4px_var(--accent-red)]" />
             <span className="text-[10px] font-bold text-[var(--accent-red)] uppercase tracking-wider">{match.minute}&apos;</span>
           </div>

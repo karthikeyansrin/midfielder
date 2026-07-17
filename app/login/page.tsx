@@ -62,7 +62,7 @@ export default function LoginPage() {
             <div className="p-8 sm:p-10">
               <div className="flex flex-col items-center text-center mb-8">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--accent-amber)] shadow-[0_0_15px_rgba(245,158,11,0.4)] mb-6">
-                  <Zap className="h-6 w-6 text-black" strokeWidth={2.5} />
+                  <Zap aria-hidden="true" className="h-6 w-6 text-black" strokeWidth={2.5} />
                 </div>
                 <h1 className="text-2xl font-bold text-[var(--text-primary)] tracking-tight">
                   Welcome Back to {APP_NAME}
@@ -75,14 +75,14 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              <form onSubmit={handleLogin} className="space-y-6">
+              <form onSubmit={handleLogin} aria-label="Fan login form" className="space-y-6">
                 <div className="space-y-2">
                   <label htmlFor="fanId" className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] block">
                     Fan ID
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <User className="h-5 w-5 text-[var(--text-muted)]" />
+                      <User aria-hidden="true" className="h-5 w-5 text-[var(--text-muted)]" />
                     </div>
                     <input
                       id="fanId"
@@ -102,7 +102,7 @@ export default function LoginPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <User className="h-5 w-5 text-[var(--text-muted)] opacity-0" />
+                      <User aria-hidden="true" className="h-5 w-5 text-[var(--text-muted)] opacity-0" />
                     </div>
                     <input
                       id="password"
@@ -115,6 +115,7 @@ export default function LoginPage() {
                   </div>
                   {error && (
                     <motion.p 
+                      role="alert"
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       className="text-xs text-[var(--accent-red)] mt-2 font-medium"

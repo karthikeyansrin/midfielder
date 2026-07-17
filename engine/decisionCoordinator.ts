@@ -4,17 +4,24 @@ import { Recommendation } from "@/domain/recommendation/Recommendation";
 import { DecisionEngine } from "./decisionEngine";
 import { getRelevantEvents } from "./impactAnalyzer";
 
+/**
+ * Internal state for tracking decision generation per fan.
+ */
 interface DecisionState {
+  /** Hash of the context used for the last generation */
   lastHash: string;
+  /** Timestamp of the last successful generation */
   lastComputedAt: number;
+  /** Whether a generation is currently in progress (concurrency lock) */
   isComputing: boolean;
+  /** Timestamp when the current recommendation expires */
   expiresAt?: number;
 }
 
 // In-memory state store for the hackathon
 const stateMap = new Map<string, DecisionState>();
 
-const COOLDOWN_MS = 30000; // 30 seconds
+export const COOLDOWN_MS = 30000; // 30 seconds
 
 export interface CoordinatorResult {
   status: "cached" | "cooldown" | "processing" | "generated" | "error";

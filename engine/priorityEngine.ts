@@ -12,33 +12,20 @@ export function calculatePriority(events: StadiumEvent[]): RecommendationPriorit
   return "INFO";
 }
 
+export const EXPIRATION_MINUTES: Record<RecommendationPriority, number> = {
+  CRITICAL: 2,
+  HIGH: 5,
+  MEDIUM: 15,
+  LOW: 30,
+  INFO: 60,
+};
+
 /**
  * Deterministically sets the expiration time based on priority.
- * 
- * CRITICAL: 2 min
- * HIGH: 5 min
- * MEDIUM: 15 min
- * LOW: 30 min
- * INFO: 60 min (default)
  */
 export function getExpirationTime(priority: RecommendationPriority, currentTimeStr: string): string {
   const current = new Date(currentTimeStr);
-  let minutesToAdd = 60; // Default for INFO
-
-  switch (priority) {
-    case "CRITICAL":
-      minutesToAdd = 2;
-      break;
-    case "HIGH":
-      minutesToAdd = 5;
-      break;
-    case "MEDIUM":
-      minutesToAdd = 15;
-      break;
-    case "LOW":
-      minutesToAdd = 30;
-      break;
-  }
+  const minutesToAdd = EXPIRATION_MINUTES[priority] || EXPIRATION_MINUTES.INFO;
 
   current.setMinutes(current.getMinutes() + minutesToAdd);
   return current.toISOString();

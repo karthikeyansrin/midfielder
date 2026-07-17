@@ -15,7 +15,6 @@ export function DashboardClient() {
   const router = useRouter();
   const { fanContext, isHydrated } = useFanState();
   const { activeRecommendation } = useRecommendationStore();
-  const [showHistory, setShowHistory] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -35,9 +34,10 @@ export function DashboardClient() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-8 pb-24 px-4 sm:px-0">
+      <h1 className="sr-only">Fan Dashboard</h1>
       
       {/* 0. Transparency Badge */}
-      <div className="bg-[var(--accent-blue-glow)] border border-[rgba(59,130,246,0.3)] rounded-lg p-3 flex items-start gap-3">
+      <div role="status" className="bg-[var(--accent-blue-glow)] border border-[rgba(59,130,246,0.3)] rounded-lg p-3 flex items-start gap-3">
         <Info className="w-5 h-5 text-[var(--accent-blue)] shrink-0 mt-0.5" />
         <div>
           <p className="text-xs font-bold text-[var(--accent-blue)] uppercase tracking-wider mb-1">Simulation Environment</p>
@@ -65,7 +65,7 @@ export function DashboardClient() {
             <div className="bg-[var(--bg-elevated)] border border-[var(--border-subtle)] rounded-xl p-6">
               <h3 className="text-sm font-semibold uppercase tracking-wider text-[var(--text-primary)] mb-4 flex items-center gap-2">
                 <Activity className="w-4 h-4 text-[var(--text-muted)]" />
-                Why this action?
+                Why this action? — AI Reasoning
               </h3>
               <ul className="space-y-4">
                 {activeRecommendation.explanation.map((reason, i) => (
@@ -93,26 +93,7 @@ export function DashboardClient() {
 
       {/* 5. Recommendation History (Collapsed) */}
       <div className="pt-8 border-t border-[var(--border-subtle)]">
-        {/* <button 
-          onClick={() => setShowHistory(!showHistory)}
-          className="flex items-center gap-2 text-sm font-semibold text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors mx-auto"
-        >
-          {showHistory ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          Past Recommendations
-        </button> */}
-        
-        <AnimatePresence>
-          {showHistory && (
-            <motion.div
-              initial={{ height: 0, opacity: 0, marginTop: 0 }}
-              animate={{ height: "auto", opacity: 1, marginTop: 24 }}
-              exit={{ height: 0, opacity: 0, marginTop: 0 }}
-              className="overflow-hidden"
-            >
-              <RecommendationHistory />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <RecommendationHistory />
       </div>
       
     </div>

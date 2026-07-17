@@ -9,7 +9,11 @@ import { parseGeminiResponse } from "@/lib/parseGeminiResponse";
 import { validateRecommendation } from "@/lib/validateGeminiResponse";
 import { buildDecisionPrompt } from "@/prompts/decision.prompt";
 
-const getValidMatchState = (status?: string): "pre_match" | "in_progress" | "half_time" | "post_match" => {
+/**
+ * Maps external match status (e.g. from an API) to our internal 4-state phase model.
+ * Assumes pre_match if the status is unknown or undefined.
+ */
+export const getValidMatchState = (status?: string): "pre_match" | "in_progress" | "half_time" | "post_match" => {
   switch (status) {
     case "kickoff":
     case "first_half":

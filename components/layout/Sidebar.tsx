@@ -55,7 +55,7 @@ export function Sidebar({ variant }: SidebarProps) {
   };
 
   return (
-    <aside className="hidden lg:flex w-60 flex-col shrink-0 border-r border-[var(--border-subtle)] bg-[var(--bg-surface)] h-full min-h-screen">
+    <aside aria-label="Dashboard sidebar" className="hidden lg:flex w-60 flex-col shrink-0 border-r border-[var(--border-subtle)] bg-[var(--bg-surface)] h-full min-h-screen">
       {/* Brand */}
       <div className="flex h-16 items-center gap-2 px-5 border-b border-[var(--border-subtle)]">
         <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[var(--accent-amber)] shadow-[0_0_10px_rgba(245,158,11,0.35)]">
@@ -82,7 +82,7 @@ export function Sidebar({ variant }: SidebarProps) {
       <Separator className="bg-[var(--border-subtle)]" />
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1" id="sidebar-nav">
+      <nav aria-label="Sidebar navigation" className="flex-1 overflow-y-auto px-3 py-4 space-y-1" id="sidebar-nav">
         {navItems.map((item) => {
           const Icon = ICON_MAP[item.icon] ?? LayoutDashboard;
           const isActive = pathname === item.href ||
@@ -120,7 +120,7 @@ export function Sidebar({ variant }: SidebarProps) {
       {/* Footer stub — profile or logout */}
       <div className="px-3 py-4 space-y-2">
         <div className="flex items-center gap-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-elevated)] px-3 py-2.5">
-          <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[var(--accent-amber)] to-[var(--accent-emerald)] shrink-0" />
+          <div aria-hidden="true" className="h-7 w-7 rounded-full bg-gradient-to-br from-[var(--accent-amber)] to-[var(--accent-emerald)] shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="truncate text-xs font-medium text-[var(--text-primary)]">
               {variant === "admin" ? "Admin User" : (fanContext?.displayName || "Guest Fan")}

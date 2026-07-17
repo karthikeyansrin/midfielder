@@ -85,11 +85,12 @@ export function EventSimulator() {
           <p className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-3">
             Scenario
           </p>
-          <div className="space-y-2">
+          <div className="space-y-2" role="group" aria-label="Scenario">
             {SCENARIOS.map((scenario) => (
               <button
                 key={scenario.id}
                 id={`simulator-scenario-${scenario.id}`}
+                aria-pressed={selectedScenario === scenario.id}
                 onClick={() => setSelectedScenario(scenario.id)}
                 className={cn(
                   "w-full flex items-center justify-between rounded-lg border px-3 py-2.5 text-sm text-left transition-all",
@@ -117,11 +118,12 @@ export function EventSimulator() {
           <p className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-3">
             Intensity
           </p>
-          <div className="flex gap-2">
+          <div className="flex gap-2" role="group" aria-label="Intensity">
             {INTENSITIES.map((level) => (
               <button
                 key={level}
                 id={`simulator-intensity-${level}`}
+                aria-pressed={intensity === level}
                 onClick={() => setIntensity(level)}
                 className={cn(
                   "flex-1 rounded-lg border py-2 text-xs font-medium capitalize transition-all",

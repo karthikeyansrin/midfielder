@@ -97,7 +97,7 @@ export function NextBestAction() {
   if (!fanContext) return null;
 
   return (
-    <div className="w-full flex flex-col gap-6 relative min-h-[200px]">
+    <section aria-label="AI next best action" className="w-full flex flex-col gap-6 relative min-h-[200px]">
       <AnimatePresence mode="wait">
         {showThinking ? (
           <motion.div
@@ -107,9 +107,11 @@ export function NextBestAction() {
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.3 }}
             className="absolute inset-0 z-10 rounded-xl border border-[var(--accent-amber)] bg-[var(--bg-surface)] p-8 flex flex-col items-center justify-center text-center shadow-[0_0_20px_rgba(245,158,11,0.15)]"
+            role="status"
+            aria-live="polite"
           >
             <Loader2 className="w-10 h-10 text-[var(--accent-amber)] animate-spin mb-4" />
-            <h2 className="text-xl font-bold text-[var(--text-primary)]">MIDFIELDER is analyzing the stadium...</h2>
+            <h2 className="text-xl font-bold text-[var(--text-primary)]">Generating AI next best action...</h2>
             <p className="text-sm text-[var(--text-secondary)]">Your AI assistant hasn&apos;t generated any insights yet.</p>
           </motion.div>
         ) : !activeRecommendation ? (
@@ -125,7 +127,7 @@ export function NextBestAction() {
                 You&apos;re all set.
               </h2>
               <p className="text-[var(--text-secondary)] mt-2">
-                MIDFIELDER is monitoring the stadium and will let you know if your situation changes.
+                No AI insights yet. Stadium events will be analyzed by Google Gemini to generate your personalized next best action.
               </p>
             </div>
             <div className="hidden md:flex h-12 w-12 rounded-full bg-[var(--bg-elevated)] items-center justify-center border border-[var(--border-subtle)]">
@@ -203,6 +205,7 @@ export function NextBestAction() {
 
               <div className="flex flex-col gap-3 justify-end md:w-48 shrink-0">
                 <button 
+                  type="button"
                   onClick={completeActive}
                   className="w-full flex items-center justify-center gap-2 bg-[var(--text-primary)] text-[var(--bg-base)] font-bold py-3.5 px-4 rounded-xl hover:opacity-90 transition-all shadow-md hover:shadow-lg active:scale-95"
                 >
@@ -210,6 +213,7 @@ export function NextBestAction() {
                   Accept Action
                 </button>
                 <button 
+                  type="button"
                   onClick={dismissActive}
                   className="w-full text-sm font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] transition-colors py-2.5 rounded-lg"
                 >
@@ -221,6 +225,6 @@ export function NextBestAction() {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </section>
   );
 }

@@ -32,7 +32,7 @@ export function Navbar({ variant = "landing" }: NavbarProps) {
         "glass border-b border-[var(--border-subtle)]"
       )}
     >
-      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <nav aria-label="Main navigation" className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group" id="navbar-logo">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent-amber)] shadow-[0_0_12px_rgba(245,158,11,0.4)] transition-shadow group-hover:shadow-[0_0_20px_rgba(245,158,11,0.6)]">
@@ -142,6 +142,8 @@ export function Navbar({ variant = "landing" }: NavbarProps) {
             className="flex md:hidden h-9 w-9 items-center justify-center rounded-lg border border-[var(--border-subtle)] text-[var(--text-secondary)]"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
             id="navbar-mobile-toggle"
           >
             {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -155,6 +157,7 @@ export function Navbar({ variant = "landing" }: NavbarProps) {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
+          id="mobile-menu"
           className="border-t border-[var(--border-subtle)] bg-[var(--bg-surface)] md:hidden"
         >
           <div className="px-4 py-4 space-y-2">

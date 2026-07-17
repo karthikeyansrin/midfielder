@@ -84,7 +84,7 @@ export function OnboardingWizard() {
               Fan Setup
             </span>
           </div>
-          <Progress value={progress} className="h-1 bg-[var(--bg-elevated)]" />
+          <Progress value={progress} aria-label="Onboarding progress" className="h-1 bg-[var(--bg-elevated)]" />
           <div className="mt-3 flex items-center justify-between">
             <p className="text-xs text-[var(--text-muted)]">
               Step {step + 1} of {STEPS.length}
@@ -96,7 +96,7 @@ export function OnboardingWizard() {
         </div>
 
         {/* Content */}
-        <div className="px-6 py-6 min-h-[400px]">
+        <div className="px-6 py-6 min-h-[400px]" aria-live="polite">
           <AnimatePresence mode="wait">
             
             {/* STEP 0: ACCOUNT SETUP */}
@@ -113,8 +113,9 @@ export function OnboardingWizard() {
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Fan ID</label>
+                    <label htmlFor="onboarding-fanId" className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Fan ID</label>
                     <input 
+                      id="onboarding-fanId"
                       type="text" 
                       placeholder="e.g. portugal_fan_07" 
                       value={data.fanId || ""}
@@ -124,8 +125,9 @@ export function OnboardingWizard() {
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Password</label>
+                    <label htmlFor="onboarding-password" className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Password</label>
                     <input 
+                      id="onboarding-password"
                       type="password" 
                       placeholder="Enter a strong password" 
                       value={data.password || ""}
@@ -152,8 +154,9 @@ export function OnboardingWizard() {
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Match & Stadium</label>
+                    <label htmlFor="onboarding-stadium" className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Match & Stadium</label>
                     <select 
+                      id="onboarding-stadium"
                       value={data.stadiumId || ""}
                       onChange={(e) => updateData({ stadiumId: e.target.value })}
                       className="w-full bg-[var(--bg-elevated)] border border-[var(--border-subtle)] rounded-lg px-4 py-3 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-amber)] transition-colors appearance-none mb-2"
@@ -188,8 +191,9 @@ export function OnboardingWizard() {
                   </div>
                   
                   <div>
-                    <label className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Row (Optional)</label>
+                    <label htmlFor="onboarding-row" className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Row (Optional)</label>
                     <input 
+                      id="onboarding-row"
                       type="text" 
                       placeholder="e.g. M24" 
                       value={data.row || ""}
@@ -236,8 +240,9 @@ export function OnboardingWizard() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Arrival Time</label>
+                      <label htmlFor="onboarding-arrival" className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Arrival Time</label>
                       <select 
+                        id="onboarding-arrival"
                         value={data.arrivalTime}
                         onChange={(e) => updateData({ arrivalTime: e.target.value })}
                         className="w-full bg-[var(--bg-elevated)] border border-[var(--border-subtle)] rounded-lg px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-amber)] transition-colors appearance-none"
@@ -250,8 +255,9 @@ export function OnboardingWizard() {
                       </select>
                     </div>
                     <div>
-                      <label className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Departure Plan</label>
+                      <label htmlFor="onboarding-departure" className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2 block">Departure Plan</label>
                       <select 
+                        id="onboarding-departure"
                         value={data.departurePlan}
                         onChange={(e) => updateData({ departurePlan: e.target.value })}
                         className="w-full bg-[var(--bg-elevated)] border border-[var(--border-subtle)] rounded-lg px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-amber)] transition-colors appearance-none"
@@ -274,6 +280,8 @@ export function OnboardingWizard() {
                         </div>
                       </div>
                       <button
+                        role="switch"
+                        aria-checked={data.parkingRequired}
                         onClick={() => updateData({ parkingRequired: !data.parkingRequired })}
                         className={cn(
                           "w-12 h-6 rounded-full transition-colors relative",
