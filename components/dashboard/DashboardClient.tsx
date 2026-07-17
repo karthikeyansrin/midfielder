@@ -65,7 +65,7 @@ export function DashboardClient() {
             <div className="bg-[var(--bg-elevated)] border border-[var(--border-subtle)] rounded-xl p-6">
               <h3 className="text-sm font-semibold uppercase tracking-wider text-[var(--text-primary)] mb-4 flex items-center gap-2">
                 <Activity className="w-4 h-4 text-[var(--text-muted)]" />
-                Why this action? — AI Reasoning
+                AI Reasoning
               </h3>
               <ul className="space-y-4">
                 {activeRecommendation.explanation.map((reason, i) => (

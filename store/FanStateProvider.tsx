@@ -32,8 +32,8 @@ export function FanStateProvider({ children }: { children: React.ReactNode }) {
             setFanContextState(profile);
           }
         }
-      } catch (e) {
-        console.error("Failed to load FanContext from Firestore", e);
+      } catch (error) {
+        console.error("Failed to load FanContext from Firestore", error);
       } finally {
         setIsHydrated(true);
       }
@@ -48,8 +48,8 @@ export function FanStateProvider({ children }: { children: React.ReactNode }) {
       // It's the caller's responsibility to save to Firestore via FanRepository,
       // but we do it here as a safety measure.
       FanRepository.saveFan(context).catch(console.error);
-    } catch (e) {
-      console.error("Failed to save fanId to localStorage", e);
+    } catch (error) {
+      console.error("Failed to save fanId to localStorage", error);
     }
   };
 
@@ -57,8 +57,8 @@ export function FanStateProvider({ children }: { children: React.ReactNode }) {
     setFanContextState(null);
     try {
       localStorage.removeItem(LOCAL_STORAGE_KEY);
-    } catch (e) {
-      console.error("Failed to remove FanContext from localStorage", e);
+    } catch (error) {
+      console.error("Failed to remove FanContext from localStorage", error);
     }
   };
 

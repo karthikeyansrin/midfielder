@@ -17,6 +17,16 @@ export interface GeminiRecommendationOutput {
 
 /**
  * Validates and maps the Gemini output to our internal Domain Model.
+ * 
+ * Responsibility: Converts a raw unstructured (or partially structured) Gemini JSON output into a fully formed Recommendation entity, mapping priorities and computing expiration times.
+ * 
+ * Inputs:
+ * - parsedOutput: Partial<GeminiRecommendationOutput> (The parsed JSON object from Gemini)
+ * - relevantEvents: StadiumEvent[] (Events that are relevant to this context)
+ * - currentTime: string (ISO string for calculating expirations)
+ * 
+ * Outputs:
+ * - Recommendation (A domain-validated recommendation object)
  */
 export function buildRecommendation(
   parsedOutput: Partial<GeminiRecommendationOutput>,

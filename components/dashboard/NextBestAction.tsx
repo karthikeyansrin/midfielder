@@ -111,7 +111,7 @@ export function NextBestAction() {
             aria-live="polite"
           >
             <Loader2 className="w-10 h-10 text-[var(--accent-amber)] animate-spin mb-4" />
-            <h2 className="text-xl font-bold text-[var(--text-primary)]">Generating AI next best action...</h2>
+            <h2 className="text-xl font-bold text-[var(--text-primary)]">Analyzing your context with Google Gemini...</h2>
             <p className="text-sm text-[var(--text-secondary)]">Your AI assistant hasn&apos;t generated any insights yet.</p>
           </motion.div>
         ) : !activeRecommendation ? (
@@ -127,7 +127,7 @@ export function NextBestAction() {
                 You&apos;re all set.
               </h2>
               <p className="text-[var(--text-secondary)] mt-2">
-                No AI insights yet. Stadium events will be analyzed by Google Gemini to generate your personalized next best action.
+                No AI recommendation available yet. MIDFIELDER continuously analyzes your fan profile together with live stadium events to generate personalized recommendations.
               </p>
             </div>
             <div className="hidden md:flex h-12 w-12 rounded-full bg-[var(--bg-elevated)] items-center justify-center border border-[var(--border-subtle)]">

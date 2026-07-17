@@ -55,8 +55,9 @@ export function getFirestoreDb(): Firestore {
     // with gRPC 'Listen' stream errors. Forcing long polling fixes this instability.
     try {
       db = initializeFirestore(getFirebaseApp(), { experimentalForceLongPolling: true });
-    } catch {
+    } catch (error) {
       // If already initialized somewhere else
+      console.warn("Firestore already initialized, falling back to getFirestore:", error);
       db = getFirestore(getFirebaseApp());
     }
   }

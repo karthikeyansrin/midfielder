@@ -53,8 +53,8 @@ export function EventSimulator() {
       });
       const data = await res.json() as { events?: StadiumEvent[] };
       setResults(data.events ?? []);
-    } catch {
-      console.error("Simulation failed");
+    } catch (error) {
+      console.error("Simulation failed:", error);
     } finally {
       setIsRunning(false);
     }
@@ -169,7 +169,7 @@ export function EventSimulator() {
             >
               <p className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] flex items-center gap-2">
                 <CheckCircle className="h-3 w-3 text-[var(--accent-emerald)]" />
-                {results.length} Events Generated
+                Generated {results.length} events. This may trigger new AI recommendations.
               </p>
               {results.map((event) => (
                 <motion.div

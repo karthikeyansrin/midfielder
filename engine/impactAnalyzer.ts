@@ -3,7 +3,15 @@ import { StadiumEvent } from "@/domain/events/StadiumEvent";
 
 /**
  * Determines which active stadium events are relevant to the fan.
- * Filters out events that don't apply based on their location, transport mode, etc.
+ * 
+ * Responsibility: Filters out events that don't apply to the user to reduce AI token usage and improve recommendation accuracy. It evaluates spatial relevance, transport modes, and event severities.
+ * 
+ * Inputs:
+ * - fan: FanContext (The fan's profile, including section and transport mode)
+ * - activeEvents: StadiumEvent[] (All currently active events in the stadium)
+ * 
+ * Outputs:
+ * - StadiumEvent[] (A filtered subset of events that directly affect this fan)
  */
 export function getRelevantEvents(
   fan: FanContext,
