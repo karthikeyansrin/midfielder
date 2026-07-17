@@ -1,51 +1,240 @@
 # MIDFIELDER ⚡
 
-**App URL**: https://midfielder-53525848512.europe-west1.run.app
-#
+**Live Demo:** https://midfielder-53525848512.europe-west1.run.app
 
-> **The intelligent stadium fan engagement platform. Powered by AI. Built for matchday.**
+> **An AI-powered stadium assistant that delivers personalized "Next Best Actions" to fans during live sporting events.**
 
-MIDFIELDER is a real-time, context-aware web application built for stadium operators and fans. By ingesting live stadium operational events and passing them through a smart AI Decision Engine (powered by Gemini 3.1 Flash Lite), MIDFIELDER delivers hyper-personalized, actionable recommendations directly to a fan's dashboard. 
+---
 
-## 🌟 Key Features
+# Chosen Vertical
 
-### 1. Smart Decision Coordinator & AI Engine
-- **Gemini 3.1 Flash Lite Integration**: Analyzes incoming stadium events against a fan's specific context (seat location, travel plans, accessibility needs) to generate tailored alerts.
-- **Server-Side Gatekeeper**: A robust `DecisionCoordinator` intercepts event streams, implementing debouncing, context-hashing, and concurrency locks to prevent quota exhaustion. It ensures Gemini is only queried when a *meaningful* context shift occurs.
+**Sports Technology (SportsTech) – Smart Stadiums & Tournament Operations**
 
-### 2. Immersive Fan Experience
-- **Dynamic Onboarding Wizard**: A slick, multi-step setup flow where fans configure their unique context:
-  - **Match Info**: Stadium selection and seat zones (e.g., North Gate, Section 101, VIP Lounge).
-  - **Travel Profile**: Transport mode, arrival times, and parking requirements.
-  - **Preferences & Accessibility**: Food/merch interests, and critical needs like wheelchair assistance.
-- **Personalized Fan Hub**: A live dashboard that updates dynamically with AI recommendations (e.g., "Use South Gate to avoid congestion," "Flash sale near Section 101") based exclusively on the fan's current profile.
+MIDFIELDER is an AI-powered decision support platform built for the FIFA World Cup 2026 stadium experience. It continuously monitors stadium operational events and provides each fan with context-aware recommendations that improve navigation, safety, convenience, and overall match-day experience.
 
-### 3. Mission Control (Admin Panel)
-- **Live Event Simulator**: Operators can inject randomized, realistic stadium events (Crowd Congestion, Medical Emergencies, Gate Closures) into the central event bus.
-- **Zone Monitoring**: Real-time visual monitoring of stadium zones. As simulated events occur in specific areas (e.g., "Food Court A"), the corresponding UI zones react and display severity levels (Healthy, Warning, Critical).
+---
 
-### 4. Technical Highlights
-- **Realistic Tournament Context**: Incorporates real FIFA World Cup 2026 teams, match schedules, and host stadiums for an authentic demo experience, while keeping underlying operational intelligence fully AI-driven.
-- **Real-time Sync**: Firebase Firestore integration for seamless, instant state updates across all connected clients.
-- **Modern UI/UX**: Built with Next.js, Framer Motion, and Tailwind CSS. Features glassmorphism, dynamic breadcrumbs, responsive grids, and highly polished micro-animations.
+# Problem Statement
 
-## 🚀 Quick Start (Demo Mode)
+During major sporting events, thousands of fans receive the same generic announcements despite having completely different situations.
 
-We have pre-configured test accounts for quick hackathon demonstrations.
+A family arriving late, a wheelchair user, a fan looking for merchandise, and a VIP guest all require different guidance.
 
-### Admin Access (Mission Control)
-1. Navigate to `/admin/login`
-2. Use the test credentials: `admin` / `admin`
-3. Generate simulated events using the **Simulator Controls** and watch the stadium zones react in real-time.
+MIDFIELDER transforms live operational events into personalized recommendations by understanding each fan's context instead of broadcasting one-size-fits-all alerts.
 
-### Fan Access (Dashboard)
-1. Navigate to `/login`
-2. Use the test credentials: `test` / `test`
-3. (Alternatively, hit **Get Started** on the landing page to experience the full onboarding flow).
-4. Watch as the AI generates personalized alerts in response to the Admin's simulated events.
+---
 
-## 🛠️ Built With
-- **Framework**: Next.js (App Router), React
-- **Styling**: Tailwind CSS, Framer Motion
-- **Database**: Firebase (Firestore)
-- **AI**: Google Gemini SDK (Gemini 3.1 Flash Lite)
+# Approach & Logic
+
+The solution follows an event-driven architecture.
+
+1. Fans create their match-day profile through onboarding.
+2. Stadium operators generate or receive operational events.
+3. Events are stored in Firestore.
+4. The Decision Coordinator determines whether an AI recommendation is actually required.
+5. If necessary, Google Gemini analyzes the fan context together with relevant events.
+6. The generated recommendation is stored and delivered to the fan dashboard in real time.
+
+The Decision Coordinator prevents unnecessary AI calls through:
+
+- Context hashing
+- Request deduplication
+- Cooldown windows
+- Concurrency control
+- Debouncing
+
+This keeps the system responsive while minimizing AI usage.
+
+---
+
+# How the Solution Works
+
+```
+Mission Control
+        │
+        ▼
+ Stadium Event Simulator
+        │
+        ▼
+ Firebase Firestore
+        │
+        ▼
+ Decision Coordinator
+        │
+        ▼
+ Google Gemini
+        │
+        ▼
+ Personalized Recommendation
+        │
+        ▼
+ Fan Dashboard
+```
+
+---
+
+# Features
+
+## AI Decision Engine
+
+- Google Gemini-powered recommendation engine
+- Context-aware "Next Best Action" generation
+- Personalized recommendations based on:
+  - Seat location
+  - Entry gate
+  - Transport mode
+  - Arrival time
+  - Accessibility needs
+  - Fan preferences
+
+---
+
+## Fan Dashboard
+
+- Personalized AI recommendations
+- Live stadium event updates
+- Match information
+- Dynamic onboarding experience
+- Real-time Firestore synchronization
+
+---
+
+## Mission Control
+
+- Stadium operations dashboard
+- Event simulator
+- Zone monitoring
+- Crowd incident generation
+- Gate closure simulation
+- Medical emergency simulation
+- Weather alerts
+- Live event management
+
+---
+
+## Technical Highlights
+
+- Next.js App Router
+- Google Gemini integration
+- Firebase Firestore real-time synchronization
+- Event-driven architecture
+- Server-side AI orchestration
+- Responsive modern UI
+- Dockerized deployment
+- Google Cloud Run hosting
+
+---
+
+# Assumptions
+
+- Stadium operational events are simulated for demonstration purposes.
+- FIFA World Cup teams, venues, and fixtures are representative demo data.
+- Firestore acts as the system's real-time event backbone.
+- Recommendations are generated for a single fan profile at a time.
+- Internet connectivity is available for Firebase and Gemini services.
+
+---
+
+# Demo Accounts
+
+## Admin
+
+URL
+
+```
+/admin/login
+```
+
+Credentials
+
+```
+Username: admin
+Password: admin
+```
+
+Use Mission Control to generate stadium events and observe AI recommendations being produced.
+
+---
+
+## Fan
+
+URL
+
+```
+/login
+```
+
+Credentials
+
+```
+Username: test
+Password: test
+```
+
+Or complete the onboarding flow using **Get Started** from the landing page.
+
+---
+
+# Tech Stack
+
+| Category | Technology |
+|-----------|------------|
+| Framework | Next.js 15 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS |
+| Animation | Framer Motion |
+| Database | Firebase Firestore |
+| AI | Google Gemini |
+| Deployment | Google Cloud Run |
+| Containerization | Docker |
+
+---
+
+# Local Setup
+
+Clone the repository
+
+```bash
+git clone https://github.com/karthikeyansrin/midfielder
+cd midfielder
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Create a `.env.local`
+
+```env
+GEMINI_API_KEY=...
+
+NEXT_PUBLIC_FIREBASE_API_KEY=...
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=...
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
+NEXT_PUBLIC_FIREBASE_APP_ID=...
+```
+
+Run locally
+
+```bash
+npm run dev
+```
+
+---
+
+# Future Enhancements
+
+- Integration with live stadium IoT feeds
+- Real-time public transport APIs
+- Predictive crowd flow analysis
+- Push notifications
+- Multi-language recommendations
+- Operator analytics dashboard
+
+---
+
+Built for **PromptWars Virtual Hackathon 2026** using Google Gemini.
